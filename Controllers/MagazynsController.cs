@@ -12,42 +12,45 @@ using Microsoft.AspNetCore.Authorization;
 namespace SystemZglaszaniaAwariiMagazynowych.Controllers
 {
     [Authorize(Roles = "admin, pracownik, mechanik")]
-    public class MaszynasController : Controller
+    public class MagazynsController : Controller
     {
+
         private readonly ApplicationDbContext _context;
 
-        public MaszynasController(ApplicationDbContext context)
+        public MagazynsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Maszynas
+        // GET: Magazyns
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Maszynas.Include(m => m.User);
+            var applicationDbContext = _context.Magazyns.Include(m => m.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: Maszynas/Details/5
+        // GET: Magazyns/Details/5
+
+
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Maszynas == null)
+            if (id == null || _context.Magazyns == null)
             {
                 return NotFound();
             }
 
-            var maszyna = await _context.Maszynas
+            var magazyn = await _context.Magazyns
                 .Include(m => m.User)
-                .FirstOrDefaultAsync(m => m.MaszynaId == id);
-            if (maszyna == null)
+                .FirstOrDefaultAsync(m => m.MagazynId == id);
+            if (magazyn == null)
             {
                 return NotFound();
             }
 
-            return View(maszyna);
+            return View(magazyn);
         }
 
-        // GET: Maszynas/Create
+        // GET: Magazyns/Create
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
@@ -55,60 +58,67 @@ namespace SystemZglaszaniaAwariiMagazynowych.Controllers
             return View();
         }
 
-        // POST: Maszynas/Create
+        // POST: Magazyns/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna)
+
+        public async Task<IActionResult> Create([Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn)
         {
             if (ModelState.IsValid)
             {
-                if(!MaszynaNameExists(maszyna.MaszynaName))
                 {
-                    _context.Add(maszyna);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (!MagazynNameExists(magazyn.MagazynName))
+                    {
+                        _context.Add(magazyn);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+
+                    }
+
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje!";
+                        return View("Create");
+                    }
+
+
+
                 }
-                else
-                {
-                    ViewBag.ErrorMessage = "Maszyna o takiej nazwie już istnieje!";
-                    return View("Create");
-                }
-               
+
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", maszyna.Id);
-            return View(maszyna);
+            return View(magazyn);
         }
 
-        // GET: Maszynas/Edit/5
+        // GET: Magazyns/Edit/5
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Maszynas == null)
+            if (id == null || _context.Magazyns == null)
             {
                 return NotFound();
             }
 
-            var maszyna = await _context.Maszynas.FindAsync(id);
-            if (maszyna == null)
+            var magazyn = await _context.Magazyns.FindAsync(id);
+            if (magazyn == null)
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", maszyna.Id);
-            return View(maszyna);
+            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
+            return View(magazyn);
         }
 
-        // POST: Maszynas/Edit/5
+        // POST: Magazyns/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna)
+        public async Task<IActionResult> Edit(int id, [Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn)
         {
-            if (id != maszyna.MaszynaId)
+            if (id != magazyn.MagazynId)
             {
                 return NotFound();
             }
@@ -117,12 +127,12 @@ namespace SystemZglaszaniaAwariiMagazynowych.Controllers
             {
                 try
                 {
-                    _context.Update(maszyna);
+                    _context.Update(magazyn);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MaszynaExists(maszyna.MaszynaId))
+                    if (!MagazynExists(magazyn.MagazynId))
                     {
                         return NotFound();
                     }
@@ -133,71 +143,86 @@ namespace SystemZglaszaniaAwariiMagazynowych.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", maszyna.Id);
-            return View(maszyna);
+            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
+            return View(magazyn);
         }
 
-        // GET: Maszynas/Delete/5
+        // GET: Magazyns/Delete/5
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Maszynas == null)
+            if (id == null || _context.Magazyns == null)
             {
                 return NotFound();
             }
 
-            var maszyna = await _context.Maszynas
+            var magazyn = await _context.Magazyns
                 .Include(m => m.User)
-                .FirstOrDefaultAsync(m => m.MaszynaId == id);
-            if (maszyna == null)
+                .FirstOrDefaultAsync(m => m.MagazynId == id);
+            if (magazyn == null)
             {
                 return NotFound();
             }
 
-            if (MaszynaZgloszenia(id)) {
 
-                ViewBag.DeleteMessage = "Nie można usunąć wybranej maszyny, ponieważ ma przypisane zgłoszenie";
-            
+            if (TextsInCategory(id))
+            {
+                ViewBag.DeleteMessage = "Nie można usunąć wybranego Magazynu, gdyż posiada przypisane zgłoszenia.";
             }
-
-            return View(maszyna);
+            return View(magazyn);
         }
 
-        // POST: Maszynas/Delete/5
+        // POST: Magazyns/Delete/5
         [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Maszynas == null)
+            if (_context.Magazyns == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Maszynas'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Magazyns'  is null.");
             }
-            var maszyna = await _context.Maszynas.FindAsync(id);
-            if (maszyna != null)
+            var magazyn = await _context.Magazyns.FindAsync(id);
+            if (magazyn != null)
             {
-                _context.Maszynas.Remove(maszyna);
+                _context.Magazyns.Remove(magazyn);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MaszynaExists(int id)
+        private bool MagazynExists(int id)
         {
-          return _context.Maszynas.Any(e => e.MaszynaId == id);
+            return _context.Magazyns.Any(e => e.MagazynId == id);
+
+
+
         }
 
-        private bool MaszynaNameExists(string? name)
+        private bool MagazynNameExists(string? name)
         {
-            return (_context.Maszynas?.Any(e => e.MaszynaName ==
+            return (_context.Magazyns?.Any(e => e.MagazynName ==
             name)).GetValueOrDefault();
         }
-        private bool MaszynaZgloszenia(int id)
-        {
-            return (_context.Zgloszenias?.Any(t => t.MaszynaId == id)).GetValueOrDefault();
 
+
+
+        private bool TextsInCategory(int id)
+        {
+            return (_context.Magazyns?.Any(t => t.MagazynId == id)).GetValueOrDefault();
         }
 
+
     }
+
+
+
+
+
+
+
+
+
 }
+

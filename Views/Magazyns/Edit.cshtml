@@ -1,0 +1,58 @@
+﻿@model AwarieNoweZnowu.Models.Magazyn
+
+@{
+    ViewData["Title"] = "Edytuj";
+}
+
+<h1 class="text-primary Roboto">Edycja</h1
+
+<h4>Magazyn</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="MagazynId" />
+            <div class="form-group">
+                <label asp-for="MagazynName" class="control-label"></label>
+                <input asp-for="MagazynName" class="form-control" />
+                <span asp-validation-for="MagazynName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MagazynOpis" class="control-label"></label>
+                <textarea asp-for="MagazynOpis" class="form-control"> </textarea>
+                <span asp-validation-for="MagazynOpis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Graphic" class="control-label"></label>
+                <input asp-for="Graphic" class="form-control" />
+                <span asp-validation-for="Graphic" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Display" /> @Html.DisplayNameFor(model => model.Display)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <select asp-for="Id" class="form-control" asp-items="ViewBag.Id"></select>
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-outline-light" id="maszynabtn"/>
+                <a asp-action="Index" class="btn btn-outline-light" id="maszynabtn">Powrót do Spisu</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<AwarieNoweZnowu.Models.Magazyn>
+
+@{
+    ViewData["Title"] = "Spis Magazynów";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Spis Magazynów</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.MagazynName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MagazynOpis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Graphic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Display)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th width="12%"></th>
+        
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MagazynName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MagazynOpis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Graphic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Display)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                   <a asp-action="Details" asp-route-id="@item.MagazynId" class="btn btn-outline-secondary my-1" title="Szczegóły"><i class="bi bi-search" aria-label="Szczegóły maszyny"></i></a>
+                @{
+                    if(User.IsInRole("admin"))
+                    {
+                    <a asp-action="Edit" asp-route-id="@item.MagazynId" class="btn btn-outline-primary my-1" title="Edycja"><i class="bi bi-file-plus" aria-label="Edycja maszyny"></i></a>
+                   
+                    <a asp-action="Delete" asp-route-id="@item.MagazynId" class="btn btn-outline-danger my-1" title="Usuwanie"><i class="bi bi-trash3" aria-label="Usuwanie maszyny"></i></a>
+    
+                    }
+                }      
+                
+               
+        </tr>
+}
+    </tbody>
+</table>

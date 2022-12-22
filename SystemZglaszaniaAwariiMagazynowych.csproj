@@ -28,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\css\grafika\maszyny\" />
-    <Folder Include="wwwroot\css\grafika\magazyny\" />
     <Folder Include="wwwroot\css\grafika\strona\" />
   </ItemGroup>
 

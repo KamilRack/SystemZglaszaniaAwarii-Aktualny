@@ -159,7 +159,7 @@ namespace AwarieNoweZnowu.Models
 
                             MagazynName = "Magazyn z opiłkami",
                             MagazynOpis = "Magazyn z składnikami",
-                            Graphic = "mag.jpg",
+                            Graphic = "1Mag.jpg",
                             Active = true,
                             Display = true,
                             Id = idUzytkownika1,
@@ -178,7 +178,7 @@ namespace AwarieNoweZnowu.Models
                         {
                             MagazynName = "Magazyn z betonem",
                             MagazynOpis = "Magazyn z substancjami",
-                            Graphic = "mag.jpg",
+                            Graphic = "2Mag.jpg",
                             Active = true,
                             Display = true,
                             Id = idUzytkownika1,
@@ -209,7 +209,7 @@ namespace AwarieNoweZnowu.Models
 
                             MaszynaName = "Spawarka Al-102",
                             MaszynaOpis = "Spawarka",
-                            Graphic = "maszyna.jpg",
+                            Graphic = "1Masz.jpg",
                             Active = true,
                             Display = true,
                             Id = idUzytkownika1
@@ -226,7 +226,7 @@ namespace AwarieNoweZnowu.Models
                         {
                             MaszynaName = "Spawarka BC-300",
                             MaszynaOpis = "Spawarka",
-                            Graphic = "maszyna.jpg",
+                            Graphic = "2Masz.jpg",
                             Active = true,
                             Display = true,
                             Id = idUzytkownika1
