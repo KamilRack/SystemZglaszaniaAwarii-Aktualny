@@ -176,5 +176,8 @@ namespace AwarieNoweZnowu.Controllers
         {
           return _context.Zgloszenias.Any(e => e.ZgloszeniaId == id);
         }
+
+       
+
     }
 }
