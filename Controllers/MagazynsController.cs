@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AwarieNoweZnowu.Data;
-using AwarieNoweZnowu.Models;
+using SystemZglaszaniaAwariiGlowny.Data;
+using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace SystemZglaszaniaAwariiMagazynowych.Controllers
+namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
     [Authorize(Roles = "admin, pracownik, mechanik")]
     public class MagazynsController : Controller

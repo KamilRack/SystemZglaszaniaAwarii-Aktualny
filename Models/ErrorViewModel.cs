@@ -1,4 +1,4 @@
-namespace AwarieNoweZnowu.Models
+namespace SystemZglaszaniaAwariiGlowny.Models
 {
     public class ErrorViewModel
     {

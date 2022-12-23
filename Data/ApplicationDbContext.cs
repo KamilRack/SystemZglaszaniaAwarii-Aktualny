@@ -1,9 +1,9 @@
-﻿using AwarieNoweZnowu.Models;
+﻿using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace AwarieNoweZnowu.Data
+namespace SystemZglaszaniaAwariiGlowny.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

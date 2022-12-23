@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AwarieNoweZnowu.Data.Migrations
+namespace SystemZglaszaniaAwariiGlowny.Data.Migrations
 {
     public partial class dd : Migration
     {

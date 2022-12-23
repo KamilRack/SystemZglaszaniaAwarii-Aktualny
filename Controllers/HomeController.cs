@@ -1,8 +1,8 @@
-﻿using AwarieNoweZnowu.Models;
+﻿using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace AwarieNoweZnowu.Controllers
+namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
     public class HomeController : Controller
     {

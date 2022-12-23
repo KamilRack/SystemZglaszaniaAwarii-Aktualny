@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AwarieNoweZnowu.Data;
-using AwarieNoweZnowu.Models;
+using SystemZglaszaniaAwariiGlowny.Data;
+using SystemZglaszaniaAwariiGlowny.Models;
 
-namespace AwarieNoweZnowu.Controllers
+namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
     public class ZgloszeniasController : Controller
     {

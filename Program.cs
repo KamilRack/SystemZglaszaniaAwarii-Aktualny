@@ -1,5 +1,5 @@
-using AwarieNoweZnowu.Data;
-using AwarieNoweZnowu.Models;
+using SystemZglaszaniaAwariiGlowny.Data;
+using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +43,18 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllerRoute(
+ name: "pages",
+ pattern: "Lista maszyn/Strona{PageNumber}",
+ defaults: new { controller = "Maszynas", action = "Index" });
+
+
+app.MapControllerRoute(
+ name: "maszynas",
+ pattern: "Lista maszyn",
+ defaults: new { controller = "Maszynas", action = "Index" });
+
 
 app.MapControllerRoute(
     name: "default",

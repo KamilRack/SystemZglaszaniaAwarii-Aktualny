@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
-namespace AwarieNoweZnowu.Models
+namespace SystemZglaszaniaAwariiGlowny.Models
 {
     public class Maszyna
     {

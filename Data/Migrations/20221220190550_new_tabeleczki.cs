@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AwarieNoweZnowu.Data.Migrations
+namespace SystemZglaszaniaAwariiGlowny.Data.Migrations
 {
     public partial class new_tabeleczki : Migration
     {

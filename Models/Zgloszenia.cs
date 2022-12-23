@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 
-namespace AwarieNoweZnowu.Models
+namespace SystemZglaszaniaAwariiGlowny.Models
 {
     public class Zgloszenia
     {

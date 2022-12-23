@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using AwarieNoweZnowu.Data;
-using AwarieNoweZnowu.Models;
+using SystemZglaszaniaAwariiGlowny.Data;
+using SystemZglaszaniaAwariiGlowny.Models;
+using SystemZglaszaniaAwariiGlowny.Models.ModelView;
 using Microsoft.AspNetCore.Authorization;
+using static System.Net.Mime.MediaTypeNames;
 
-namespace SystemZglaszaniaAwariiMagazynowych.Controllers
+namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
     [Authorize(Roles = "admin, pracownik, mechanik")]
     public class MaszynasController : Controller
@@ -22,7 +24,35 @@ namespace SystemZglaszaniaAwariiMagazynowych.Controllers
         }
 
         // GET: Maszynas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int PageNumber = 1)
+        {
+            MMViewModel mMViewModel = new();
+            mMViewModel.MMView = new MMView();
+
+            mMViewModel.MMView.MMCount = _context.Maszynas
+            .Where(t => t.Active == true)
+            .Count();
+            mMViewModel.MMView.PageNumber = PageNumber ;
+
+
+            mMViewModel.Maszynas = (IEnumerable<Maszyna>?)await _context.Maszynas
+                    .Include(t => t.Zgloszenias)
+                    .Include(t => t.User)
+                    .Where(t => t.Active == true)
+                    .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
+                    .Take(mMViewModel.MMView.PageSize)
+                    .ToListAsync();
+
+
+            return View(mMViewModel);
+            // var applicationDbContext = _context.Maszynas
+            //       .Include(m => m.Zgloszenias)
+            //       .Include(m => m.User)
+            //      .Where(m => m.Active == true);
+            //    return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Maszynas.Include(m => m.User);
             return View(await applicationDbContext.ToListAsync());

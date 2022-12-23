@@ -1,10 +1,10 @@
-﻿using AwarieNoweZnowu.Data;
+﻿using SystemZglaszaniaAwariiGlowny.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace AwarieNoweZnowu.Models
+namespace SystemZglaszaniaAwariiGlowny.Models
 {
     public class InfoSeeder
     {
