@@ -1,5 +1,6 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+   
 }
 
 @media (min-width: 768px) {
@@ -9,9 +10,27 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+    
 }
+
+#pierwszy {
+    margin: 0 auto;
+}
+
+#drugi {
+    margin: 0 auto;
+}
+#trzeci {
+    margin: 0 auto;
+}
+
+
+
+
+
+
 
 body {
     margin-bottom: 60px;
@@ -107,6 +126,9 @@ h1 {
         transform: rotate(0deg);
     }
 }
+
+
+
 
 @media only screen and (max-width: 767px) {
     #maszynabtn {
