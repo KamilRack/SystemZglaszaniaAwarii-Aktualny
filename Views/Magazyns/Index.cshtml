@@ -1,74 +1,84 @@
-﻿@model IEnumerable<SystemZglaszaniaAwariiGlowny.Models.Magazyn>
-
+﻿@model MGViewModel
 @{
-    ViewData["Title"] = "Spis Magazynów";
+    ViewData["Title"] = "Lista Magazynow";
 }
 
-<h1>Spis Magazynów</h1>
+<div class="container">
+    <div class="row">
 
-<p>
-    <a asp-action="Create">Spis Magazynów</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MagazynName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MagazynOpis)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Graphic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Display)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th width="12%"></th>
-        
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MagazynName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MagazynOpis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Graphic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Display)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                   <a asp-action="Details" asp-route-id="@item.MagazynId" class="btn btn-outline-secondary my-1" title="Szczegóły"><i class="bi bi-search" aria-label="Szczegóły maszyny"></i></a>
-                @{
-                    if(User.IsInRole("admin"))
-                    {
-                    <a asp-action="Edit" asp-route-id="@item.MagazynId" class="btn btn-outline-primary my-1" title="Edycja"><i class="bi bi-file-plus" aria-label="Edycja maszyny"></i></a>
+        <!-- Wyszukiwarka -->
+        <div class="d-none d-md-block col-md-12 col-xl-3">
+            <div class="card mt-2 shadow-sm ">
+                <div class="card-body">
+                    
                    
-                    <a asp-action="Delete" asp-route-id="@item.MagazynId" class="btn btn-outline-danger my-1" title="Usuwanie"><i class="bi bi-trash3" aria-label="Usuwanie maszyny"></i></a>
-    
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista tekstów -->
+            <div class="col-xl-9">
+                @foreach (var item in Model.Magazyns)
+                {
+
+            
+                     <div class="card mt-2">
+                            <div class="card-header">
+                    <h4 class="text-primary oswald">@item.MagazynName</h4>
+                            </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                            <img src="@Url.Content(item.Graphic == null ?"~/css/grafika/magazyny/"+item.MagazynId+".jpg" : "~/css/grafika/magazyny/"+item.Graphic)" class="img-fluid" alt="@item.MagazynName" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <p class="card-text fst-italic">@item.MagazynOpis</p>
+                            <div class="position-relative">
+                                <a href="#" class="btn btn-outline-primary position-absolute bottom-0 end-0">Sprawdź szczegóły</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            }
+
+            </div>
+
+    </div>
+
+        <div class="row mt-3">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                @{
+                    if (Model.MMView.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", "Magazyns",new{PageNumber=Model.MMView.PageNumber -1})">Poprzednia</a>
+                        </li>
+                       
+                        }
+
+                    for (var i = 1; i <= Model.MMView.PageCount; i++)
+                    {
+                        <li class="@(i == Model.MMView.PageNumber ? "page-item active": "page-active")"><a class="page-link" href="@Url.Action("Index", "Magazyns", new{PageNumber = i})">@i</a></li>
                     }
-                }      
-                
+
+
                
-        </tr>
-}
-    </tbody>
-</table>
+                 
+                if(Model.MMView.PageNumber < Model.MMView.PageCount)
+                {
+                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Magazyns",new{PageNumber=Model.MMView.PageNumber +1})">Następna</a></li>
+                }
+                }
+            </ul>
+        </nav>
+        <div>
+</div>
+
+
+

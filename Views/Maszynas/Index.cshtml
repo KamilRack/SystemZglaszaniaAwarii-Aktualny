@@ -1,6 +1,6 @@
 ﻿@model MMViewModel
 @{
-    ViewData["Title"] = "Lista tekstów";
+    ViewData["Title"] = "Lista Maszyn";
 }
 
 <div class="container">
@@ -54,7 +54,7 @@
                     if (Model.MMView.PageNumber > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Index", "Maszynas")">Poprzednia</a>
+                            <a class="page-link" href="@Url.Action("Index", "Maszynas",new{PageNumber=Model.MMView.PageNumber -1})">Poprzednia</a>
                         </li>
                        
                         }
@@ -69,7 +69,7 @@
                  
                 if(Model.MMView.PageNumber < Model.MMView.PageCount)
                 {
-                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Maszynas")">Następna</a></li>
+                    <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Maszynas",new{PageNumber=Model.MMView.PageNumber +1})">Następna</a></li>
                 }
                 }
             </ul>

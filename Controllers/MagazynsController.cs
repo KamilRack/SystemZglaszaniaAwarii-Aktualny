@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SystemZglaszaniaAwariiGlowny.Data;
 using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Authorization;
+using SystemZglaszaniaAwariiGlowny.Models.ModelView;
 
 namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
@@ -23,7 +24,56 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         }
 
         // GET: Magazyns
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string NazwaMagazynu ,string OpisMagazynu, string Autor,int PageNumber = 1)
+        {
+
+           
+
+
+
+            MGViewModel mMViewModel = new();
+            mMViewModel.MMView = new MMView();
+
+            mMViewModel.MMView.MMCount = _context.Magazyns
+            .Where(t => t.Active == true)
+            .Count();
+            mMViewModel.MMView.PageNumber = PageNumber;
+
+            mMViewModel.MMView.NazwaMagazynu = Autor;
+            mMViewModel.MMView.OpisMagazynu = OpisMagazynu;
+            mMViewModel.MMView.Autor = Autor;
+
+            mMViewModel.Magazyns = (IEnumerable<Magazyn>?)await _context.Magazyns
+                    .Include(t => t.Zgloszenias)
+                    .Include(t => t.User)
+                    .Where(t => t.Active == true)
+                    .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
+                    .Take(mMViewModel.MMView.PageSize)
+                    .ToListAsync();
+
+            ViewData["Autor"] = new SelectList(_context.Magazyns
+            .Include(u => u.User)
+            .Select(u => u.User)
+            .Distinct(),
+            "Id", "FullName", Autor);
+
+            ViewData["NazwaMagazynu"] = new SelectList(_context.Magazyns
+            .Include(u => u.MagazynName)
+            .Select(u => u.MagazynName)
+            .Distinct(),
+            "MagazynId", "MagazynName", NazwaMagazynu);
+
+            ViewData["OpisMagazynu"] = new SelectList(_context.Magazyns
+            .Include(u => u.MagazynOpis)
+            .Select(u => u.MagazynOpis)
+            .Distinct(),
+            "MagazynId", "MagazynOpis", OpisMagazynu);
+
+
+
+            return View(mMViewModel);
+        }
+        public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Magazyns.Include(m => m.User);
             return View(await applicationDbContext.ToListAsync());

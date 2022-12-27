@@ -2,10 +2,10 @@
 
 namespace SystemZglaszaniaAwariiGlowny.Models.ModelView
 {
-    public class MMViewModel
+    public class MGViewModel
     {
-        public IEnumerable<Maszyna>? Maszynas { get; set; }
-        
+        public IEnumerable<Magazyn>? Magazyns{ get; set; }
+
 
         public MMView? MMView { get; set; }
     }

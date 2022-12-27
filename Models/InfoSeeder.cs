@@ -96,7 +96,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                 var user = new AppUser
                 {
                     UserName = "mechanik@awaria.pl",
-                    NormalizedUserName = "mechanik@awaria.pll",
+                    NormalizedUserName = "mechanik@awaria.pl",
                     Email = "mechanik@awaria.pl",
                     EmailConfirmed = true,
                     LockoutEnabled = false,

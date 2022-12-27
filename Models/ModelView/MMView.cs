@@ -10,6 +10,9 @@
         public int MMCount { get; set; }
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
+        public string? NazwaMagazynu { get; set; }
+        public string? OpisMagazynu { get; set; }
+        public string? Autor{ get; set; }
 
         public int PageCount => (int)Math.Ceiling((decimal)MMCount / PageSize);
     }
