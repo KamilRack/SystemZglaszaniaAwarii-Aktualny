@@ -6,22 +6,41 @@
 <div class="container">
     <div class="row">
 
-        <!-- Wyszukiwarka -->
         <div class="d-none d-md-block col-md-12 col-xl-3">
             <div class="card mt-2 shadow-sm ">
                 <div class="card-body">
-                    Wyszukiwarka
+                    @using (Html.BeginForm("Index", "Maszynas", new { PageNumber = "1" }, FormMethod.Get))
+                    {
+                        <div class="row gt-3">
+                            <div class="form-group col-auto">
+                                <label for="Fraza">Nazwa maszyny:</label>
+                                <input type="text" class="form-control" id="NazwaMaszyny" name="NazwaMaszyny"
+                                   placeholder="Szukany ciąg" value="@Model.MMView?.NazwaMaszyny">
+                            </div>
+                            <div class="form-group col-auto">
+                                <label for="Fraza">Fragment tekstu:</label>
+                                <input type="text" class="form-control" id="FrazaM" name="FrazaM"
+                                   placeholder="Szukany ciąg" value="@Model.MMView?.FrazaM">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4 col-auto">Filtruj</button>
+
+                        </div>
+                    }
                 </div>
             </div>
         </div>
 
         <!-- Lista tekstów -->
-            <div class="col-xl-9">
+<div class="col-xl-9">
+             @if (Model.MMView.MMCount > 0)
+              {
+
+                
                 @foreach (var item in Model.Maszynas)
                 {
 
             
-                     <div class="card mt-2">
+            <div class="card mt-2">
                             <div class="card-header">
                     <h4 class="text-primary oswald">@item.MaszynaName</h4>
                             </div>
@@ -34,7 +53,7 @@
                         <div class="card-body">
                             <p class="card-text fst-italic">@item.MaszynaOpis</p>
                             <div class="position-relative">
-                                <a href="#" class="btn btn-outline-primary position-absolute bottom-0 end-0">Sprawdź szczegóły</a>
+                                        <a href="@Url.Action("Details", "Maszynas", new{id = item.MaszynaId})" class="btn btn-outline-primary position-absolute bottom-0 end-0" id="maszynabtn">Szczegóły</a>
                             </div>
                         </div>
                     </div>
@@ -43,9 +62,16 @@
             </div>
             }
 
-            </div>
+            }
+            else 
+            {
+                <div class="alert alert-info d-flex align-items-center mt-2" role="alert"> <i class="bi bi-info-circle-fill me-3"></i>Brak maszyn do wyświetlenia. Zmień parametry filtrowania lub poszukiwany ciąg.
+                </div>
+            }
+</div>
+            
 
-    </div>
+         
 
         <div class="row mt-3">
         <nav aria-label="Page navigation">

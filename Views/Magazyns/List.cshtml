@@ -11,7 +11,7 @@
 <p>
    <a asp-action="Create" class="btn btn-outline-light" id="maszynabtn">Dodaj nowy Magazyn</a>
 </p>
-<table class="table">
+<table class="table" id="magazyny">
     <thead>
         <tr>
             <th>
@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.Display)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                Autor:
             </th>
             <th width="12%"></th>
         
@@ -46,7 +46,7 @@
                 @Html.DisplayFor(modelItem => item.MagazynOpis)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Graphic)
+               <img src="@Url.Content(item.Graphic == null ? "~/css/grafika/magazyny/brak.jpg" :"~/css/grafika/magazyny/"+item.Graphic)" width="150" height="100" alt="@item.MagazynName" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)
@@ -55,16 +55,16 @@
                 @Html.DisplayFor(modelItem => item.Display)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
                    <a asp-action="Details" asp-route-id="@item.MagazynId" class="btn btn-outline-secondary my-1" title="Szczegóły"><i class="bi bi-search" aria-label="Szczegóły maszyny"></i></a>
                 @{
                     if(User.IsInRole("admin"))
                     {
-                    <a asp-action="Edit" asp-route-id="@item.MagazynId" class="btn btn-outline-primary my-1" title="Edycja"><i class="bi bi-file-plus" aria-label="Edycja maszyny"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.MagazynId" class="btn btn-outline-primary my-1" title="Edycja"><i class="bi bi-file-plus" aria-label="Edycja maszyny"></i></a>
                    
-                    <a asp-action="Delete" asp-route-id="@item.MagazynId" class="btn btn-outline-danger my-1" title="Usuwanie"><i class="bi bi-trash3" aria-label="Usuwanie maszyny"></i></a>
+                            <a asp-action="Delete" asp-route-id="@item.MagazynId" class="btn btn-outline-danger my-1" title="Usuwanie"><i class="bi bi-trash3" aria-label="Usuwanie maszyny"></i></a>
     
                     }
                 }      
@@ -74,3 +74,39 @@
 }
     </tbody>
 </table>
+
+
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#magazyny').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Szukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+    </script>
+}

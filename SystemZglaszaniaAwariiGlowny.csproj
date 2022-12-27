@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-AwarieNoweZnowu-72B38297-92D0-479A-8350-7F86DC352B9B</UserSecretsId>
+    <UserSecretsId>aspnet-SystemZglaszaniaAwarii-72B38297-92D0-479A-8350-7F86DC352B9B</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

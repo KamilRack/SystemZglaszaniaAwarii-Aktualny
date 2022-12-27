@@ -24,8 +24,22 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         }
 
         // GET: Maszynas
-        public async Task<IActionResult> Index(int PageNumber = 1)
+        public async Task<IActionResult> Index(string NazwaMaszyny, string FrazaM, int PageNumber = 1)
         {
+
+          var SelectedTexts = _context.Maszynas?
+         .Where(t => t.Active == true);
+
+
+            if (!String.IsNullOrEmpty(FrazaM))
+            {
+                SelectedTexts = (IOrderedQueryable<Maszyna>)SelectedTexts.Where(r => r.MaszynaOpis.Contains(FrazaM));
+            }
+            if (!String.IsNullOrEmpty(NazwaMaszyny))
+            {
+                SelectedTexts = (IOrderedQueryable<Maszyna>)SelectedTexts.Where(r => r.MaszynaName.Contains(NazwaMaszyny));
+            }
+
             MMViewModel mMViewModel = new();
             mMViewModel.MMView = new MMView();
 
@@ -34,14 +48,20 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             .Count();
             mMViewModel.MMView.PageNumber = PageNumber ;
 
+            mMViewModel.MMView.NazwaMaszyny = NazwaMaszyny;
+            mMViewModel.MMView.FrazaM = FrazaM;
 
-            mMViewModel.Maszynas = (IEnumerable<Maszyna>?)await _context.Maszynas
-                    .Include(t => t.Zgloszenias)
-                    .Include(t => t.User)
-                    .Where(t => t.Active == true)
-                    .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
-                    .Take(mMViewModel.MMView.PageSize)
-                    .ToListAsync();
+            mMViewModel.Maszynas = (IEnumerable<Maszyna>?)await SelectedTexts
+            .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
+            .Take(mMViewModel.MMView.PageSize)
+                .ToListAsync();
+       //     mMViewModel.Maszynas = (IEnumerable<Maszyna>?)await _context.Maszynas
+          //          .Include(t => t.Zgloszenias)
+         //           .Include(t => t.User)
+            //        .Where(t => t.Active == true)
+           //         .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
+            //        .Take(mMViewModel.MMView.PageSize)
+            //        .ToListAsync();
 
 
             return View(mMViewModel);

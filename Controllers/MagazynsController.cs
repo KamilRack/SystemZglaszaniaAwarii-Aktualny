@@ -9,6 +9,7 @@ using SystemZglaszaniaAwariiGlowny.Data;
 using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Authorization;
 using SystemZglaszaniaAwariiGlowny.Models.ModelView;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
@@ -24,50 +25,59 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         }
 
         // GET: Magazyns
-        public async Task<IActionResult> Index(string NazwaMagazynu ,string OpisMagazynu, string Autor,int PageNumber = 1)
-        {
+        public async Task<IActionResult> Index(string NazwaMagazynu ,string Fraza,int PageNumber = 1)
+                {
+            var SelectedTexts = _context.Magazyns?
+            .Where(t => t.Active == true);
 
            
+            if (!String.IsNullOrEmpty(Fraza))
+            {
+                SelectedTexts = (IOrderedQueryable<Magazyn>)SelectedTexts.Where(r => r.MagazynOpis.Contains(Fraza));
+            }
+            if (!String.IsNullOrEmpty(NazwaMagazynu))
+            {
+                SelectedTexts = (IOrderedQueryable<Magazyn>)SelectedTexts.Where(r => r.MagazynName.Contains(NazwaMagazynu));
+            }
+
+
 
 
 
             MGViewModel mMViewModel = new();
             mMViewModel.MMView = new MMView();
 
-            mMViewModel.MMView.MMCount = _context.Magazyns
-            .Where(t => t.Active == true)
-            .Count();
+            mMViewModel.MMView.MMCount = SelectedTexts.Count();
+
+        //    mMViewModel.MMView.MMCount = _context.Magazyns
+        //     .Where(t => t.Active == true)
+        //    .Count();
             mMViewModel.MMView.PageNumber = PageNumber;
 
-            mMViewModel.MMView.NazwaMagazynu = Autor;
-            mMViewModel.MMView.OpisMagazynu = OpisMagazynu;
-            mMViewModel.MMView.Autor = Autor;
+            mMViewModel.MMView.NazwaMagazynu = NazwaMagazynu;
+            mMViewModel.MMView.Fraza = Fraza;
 
-            mMViewModel.Magazyns = (IEnumerable<Magazyn>?)await _context.Magazyns
-                    .Include(t => t.Zgloszenias)
-                    .Include(t => t.User)
-                    .Where(t => t.Active == true)
-                    .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
-                    .Take(mMViewModel.MMView.PageSize)
+
+            mMViewModel.Magazyns = (IEnumerable<Magazyn>?)await SelectedTexts
+                .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
+                .Take(mMViewModel.MMView.PageSize)
                     .ToListAsync();
 
-            ViewData["Autor"] = new SelectList(_context.Magazyns
-            .Include(u => u.User)
-            .Select(u => u.User)
-            .Distinct(),
-            "Id", "FullName", Autor);
+            //    mMViewModel.Magazyns = (IEnumerable<Magazyn>?)await _context.Magazyns
+            //       .Include(t => t.Zgloszenias)
+            //     .Include(t => t.User)
+            //     .Where(t => t.Active == true)
+            //     .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
+            //      .Take(mMViewModel.MMView.PageSize)
+            //      .ToListAsync();
 
-            ViewData["NazwaMagazynu"] = new SelectList(_context.Magazyns
-            .Include(u => u.MagazynName)
-            .Select(u => u.MagazynName)
-            .Distinct(),
-            "MagazynId", "MagazynName", NazwaMagazynu);
 
-            ViewData["OpisMagazynu"] = new SelectList(_context.Magazyns
-            .Include(u => u.MagazynOpis)
-            .Select(u => u.MagazynOpis)
-            .Distinct(),
-            "MagazynId", "MagazynOpis", OpisMagazynu);
+            //     ViewData["NazwaMagazynu"] = new SelectList(_context.Magazyns
+            //      .Include(u => u.MagazynName)
+            //      .Select(u => u.MagazynName)
+            //         .Distinct(),
+            //        "MagazynId", "MagazynName", NazwaMagazynu);
+
 
 
 

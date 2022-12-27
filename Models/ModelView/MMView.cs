@@ -11,8 +11,11 @@
         public int PageSize { get; set; }
         public int PageNumber { get; set; }
         public string? NazwaMagazynu { get; set; }
-        public string? OpisMagazynu { get; set; }
-        public string? Autor{ get; set; }
+        public string? Fraza { get; set; }
+
+        public string? NazwaMaszyny { get; set; }
+        public string? FrazaM { get; set; }
+
 
         public int PageCount => (int)Math.Ceiling((decimal)MMCount / PageSize);
     }
