@@ -5,11 +5,11 @@
 }
 
 
-<h1 id="naglowekmaszyna" class="text-primary roboto">Spis magazynów</h1>
+<h1 id="naglowekmaszyna" class="text-primary roboto col-md-12 col-xl-3">Spis magazynów</h1>
 
 
 <p>
-   <a asp-action="Create" class="btn btn-outline-light" id="maszynabtn">Dodaj nowy Magazyn</a>
+    <a asp-action="Create" class="btn btn-outline-light col-md-12 col-xl-3 col-sm-12 col-12" id="maszynabtn">Dodaj nowy Magazyn</a>
 </p>
 <table class="table" id="magazyny">
     <thead>
@@ -43,7 +43,14 @@
                 @Html.DisplayFor(modelItem => item.MagazynName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MagazynOpis)
+                    @if (item.MagazynOpis.Length <= 75)
+                    {
+                        @Html.DisplayFor(modelItem => item.MagazynOpis)
+                    }
+                    else
+                    {
+                        @(item.MagazynOpis.Substring(0, 75) + "...")
+                    }
             </td>
             <td>
                <img src="@Url.Content(item.Graphic == null ? "~/css/grafika/magazyny/brak.jpg" :"~/css/grafika/magazyny/"+item.Graphic)" width="150" height="100" alt="@item.MagazynName" />

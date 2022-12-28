@@ -4,20 +4,20 @@
     ViewData["Title"] = "Spis maszyn";
 }
 
-<h1 id="naglowekmaszyna" class="text-primary roboto">Spis maszyn</h1>
+<h1 id="naglowekmaszyna" class="text-primary roboto col-md-12 col-xl-3">Spis maszyn</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-outline-light" id="maszynabtn">Dodaj nową maszynę</a>
+    <a asp-action="Create" class="btn btn-outline-light col-md-12 col-xl-3 col-sm-12 col-12" id="maszynabtn">Dodaj nową maszynę</a>
     
 </p>
-<table class="table col-sm-1">
+<table class="table col-sm-12" id="maszyny">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.MaszynaName)
+               Nazwa maszyny:
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaszynaOpis)
+               Opis maszyny:
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Graphic)
@@ -41,10 +41,18 @@
                 @Html.DisplayFor(modelItem => item.MaszynaName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaszynaOpis)
+                    @if (item.MaszynaOpis.Length <= 75)
+                    {
+                        @Html.DisplayFor(modelItem => item.MaszynaOpis)
+                    }
+                    else
+                    {
+                        @(item.MaszynaOpis.Substring(0, 75) + "...")
+                    }
+               
             </td>
-                <td class="align-middle">
-                @Html.DisplayFor(modelItem => item.Graphic)
+             <td>
+                <img src="@Url.Content(item.Graphic == null ? "~/css/grafika/maszyny/brak.jpg" :"~/css/grafika/maszyny/"+item.Graphic)" width="150" height="100" alt="@item.MaszynaName" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)
@@ -53,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.Display)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
 
@@ -65,3 +73,37 @@
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#maszyny').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Szukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+    </script>
+}

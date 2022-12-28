@@ -83,6 +83,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
 
             return View(mMViewModel);
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Magazyns.Include(m => m.User);
@@ -166,7 +167,10 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
+            ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId","MagazynName", magazyn.MagazynId);
+            ViewData["User"] = magazyn.Id;
+
+            //    ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
             return View(magazyn);
         }
 
@@ -176,11 +180,11 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn)
+        public async Task<IActionResult> Edit(int magid, [Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn)
         {
-            if (id != magazyn.MagazynId)
-            {
-                return NotFound();
+            if (magid != magazyn.MagazynId)
+           {
+              return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -203,7 +207,8 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
+            ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", magazyn.MagazynId);
+            ViewData["User"] = magazyn.Id;
             return View(magazyn);
         }
 

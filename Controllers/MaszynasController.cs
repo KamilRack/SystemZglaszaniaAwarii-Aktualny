@@ -43,9 +43,10 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             MMViewModel mMViewModel = new();
             mMViewModel.MMView = new MMView();
 
-            mMViewModel.MMView.MMCount = _context.Maszynas
-            .Where(t => t.Active == true)
-            .Count();
+            mMViewModel.MMView.MMCount = SelectedTexts.Count();
+         //   mMViewModel.MMView.MMCount = _context.Maszynas
+        //    .Where(t => t.Active == true)
+        //    .Count();
             mMViewModel.MMView.PageNumber = PageNumber ;
 
             mMViewModel.MMView.NazwaMaszyny = NazwaMaszyny;
@@ -71,7 +72,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             //      .Where(m => m.Active == true);
             //    return View(await applicationDbContext.ToListAsync());
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Maszynas.Include(m => m.User);

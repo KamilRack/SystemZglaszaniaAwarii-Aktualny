@@ -26,8 +26,10 @@ html {
     margin: 0 auto;
 }
 
-
-
+.text-primary
+{
+    text-align: center;
+}
 
 
 
