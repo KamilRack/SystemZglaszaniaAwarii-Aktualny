@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Linq;
 
@@ -25,10 +26,12 @@ namespace SystemZglaszaniaAwariiGlowny.Models
 
         [Required]
         [Display(Name = "Czy magazyn jest do użytku?")]
+        [DefaultValue(true)]
         public bool Active { get; set; }
 
         [Required]
         [Display(Name = "Czy wyświetlać magazyn?")]
+        [DefaultValue(true)]
         public bool Display { get; set; }
 
         [Display(Name = "Osoba dodająca:")]

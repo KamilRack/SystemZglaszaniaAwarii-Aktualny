@@ -10,6 +10,9 @@ using SystemZglaszaniaAwariiGlowny.Models;
 using SystemZglaszaniaAwariiGlowny.Models.ModelView;
 using Microsoft.AspNetCore.Authorization;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
+using SystemZglaszaniaAwariiGlowny.Infrastruktura;
 
 namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
@@ -17,10 +20,12 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
     public class MaszynasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _hostEnvironment;
 
-        public MaszynasController(ApplicationDbContext context)
+        public MaszynasController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _hostEnvironment = environment;
         }
 
         // GET: Maszynas
@@ -102,7 +107,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id");
+            ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName");
             return View();
         }
 
@@ -112,24 +117,50 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna)
+        public async Task<IActionResult> Create([Bind("MaszynaId,MaszynaName,MaszynaOpis,Active,Display")] Maszyna maszyna, IFormFile? picture)
         {
             if (ModelState.IsValid)
             {
-                if(!MaszynaNameExists(maszyna.MaszynaName))
+                maszyna.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (picture != null && picture.Length > 0)
                 {
-                    _context.Add(maszyna);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    ImageFileUplM imageFileResult = new(_hostEnvironment);
+                    FileSendRes fileSendResult = imageFileResult.SendFile(picture, "grafika", 300);
+                    if (fileSendResult.Success)
+                    {
+                        maszyna.Graphic = fileSendResult.Name;
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
+                        ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaId", maszyna.MaszynaId);
+                        return View(maszyna);
+                    }
                 }
-                else
-                {
-                    ViewBag.ErrorMessage = "Maszyna o takiej nazwie już istnieje!";
-                    return View("Create");
-                }
-               
+
+
+                //    if (!MagazynNameExists(magazyn.MagazynName))
+                //    {
+
+
+
+                _context.Add(maszyna);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+                //      }
+
+                //     else
+                //      {
+                //      ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje!";
+                //       return View("Create");
+                //     }
+
+
+
+
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", maszyna.Id);
+            ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", maszyna.MaszynaId);
             return View(maszyna);
         }
 

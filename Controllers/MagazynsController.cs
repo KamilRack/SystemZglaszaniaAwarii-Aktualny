@@ -10,6 +10,8 @@ using SystemZglaszaniaAwariiGlowny.Models;
 using Microsoft.AspNetCore.Authorization;
 using SystemZglaszaniaAwariiGlowny.Models.ModelView;
 using static System.Net.Mime.MediaTypeNames;
+using System.Security.Claims;
+using SystemZglaszaniaAwariiGlowny.Infrastruktura;
 
 namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
@@ -18,10 +20,12 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
     {
 
         private readonly ApplicationDbContext _context;
+        private IWebHostEnvironment _hostEnvironment;
 
-        public MagazynsController(ApplicationDbContext context)
+        public MagazynsController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _hostEnvironment = environment;
         }
 
         // GET: Magazyns
@@ -115,7 +119,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id");
+            ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName");
             return View();
         }
 
@@ -126,30 +130,50 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Create([Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn)
+        public async Task<IActionResult> Create([Bind("MagazynId,MagazynName,MagazynOpis,Active,Display")] Magazyn magazyn, IFormFile? picture)
         {
             if (ModelState.IsValid)
             {
+                magazyn.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (picture != null && picture.Length > 0)
                 {
-                    if (!MagazynNameExists(magazyn.MagazynName))
+                    ImageFileUpl imageFileResult = new(_hostEnvironment);
+                    FileSendRes fileSendResult = imageFileResult.SendFile(picture, "grafika", 300);
+                    if (fileSendResult.Success)
                     {
+                        magazyn.Graphic = fileSendResult.Name;
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
+                        ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", magazyn.MagazynId);
+                        return View(magazyn);
+                    }
+                }
+
+                
+                //    if (!MagazynNameExists(magazyn.MagazynName))
+                //    {
+
+                       
+
                         _context.Add(magazyn);
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(Index));
 
-                    }
+              //      }
 
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje!";
-                        return View("Create");
-                    }
+               //     else
+              //      {
+                  //      ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje!";
+                 //       return View("Create");
+               //     }
 
 
-
-                }
+                
 
             }
+            ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName",magazyn.MagazynId);
             return View(magazyn);
         }
 

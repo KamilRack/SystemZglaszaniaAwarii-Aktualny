@@ -52,7 +52,7 @@
                
             </td>
              <td>
-                <img src="@Url.Content(item.Graphic == null ? "~/css/grafika/maszyny/brak.jpg" :"~/css/grafika/maszyny/"+item.Graphic)" width="150" height="100" alt="@item.MaszynaName" />
+                    <img src="@Url.Content(item.Graphic == null ? "~/grafika/maszyny/brak.jpg" :"~/grafika/maszyny/"+item.Graphic)" width="150" height="100" alt="@item.MaszynaName" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)

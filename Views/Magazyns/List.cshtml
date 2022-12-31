@@ -53,7 +53,7 @@
                     }
             </td>
             <td>
-               <img src="@Url.Content(item.Graphic == null ? "~/css/grafika/magazyny/brak.jpg" :"~/css/grafika/magazyny/"+item.Graphic)" width="150" height="100" alt="@item.MagazynName" />
+               <img src="@Url.Content(item.Graphic == null ? "~/grafika/magazyny/brak.jpg" :"~/grafika/magazyny/"+item.Graphic)" width="150" height="100" alt="@item.MagazynName" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)
