@@ -191,11 +191,22 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             {
                 return NotFound();
             }
-            ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId","MagazynName", magazyn.MagazynId);
-            ViewData["User"] = magazyn.Id;
+            if (string.Compare(User.FindFirstValue(ClaimTypes.NameIdentifier), magazyn.Id) == 0 || User.IsInRole("admin"))
+            {
+                ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", magazyn.MagazynId);
+                ViewData["Id"] = magazyn.Id;
+                return View(magazyn);
+
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+           
 
             //    ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
-            return View(magazyn);
+            
         }
 
         // POST: Magazyns/Edit/5
@@ -204,15 +215,32 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int magid, [Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn)
+        public async Task<IActionResult> Edit(int magazynid, [Bind("MagazynId,MagazynName,MagazynOpis,Graphic,Active,Display,Id")] Magazyn magazyn, IFormFile? picture)
         {
-            if (magid != magazyn.MagazynId)
+            if (magazynid != magazyn.MagazynId)
            {
               return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                if (picture != null && picture.Length > 0)
+                {
+                    ImageFileUpl imageFileResult = new(_hostEnvironment);
+                    FileSendRes fileSendResult = imageFileResult.SendFile(picture, "grafika", 600);
+                    if (fileSendResult.Success)
+                    {
+                        magazyn.Graphic = fileSendResult.Name;
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
+                        ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", magazyn.MagazynId);
+                        ViewData["Id"] = magazyn.Id;
+                        return View(magazyn);
+                    }
+                }
+
                 try
                 {
                     _context.Update(magazyn);
@@ -232,7 +260,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", magazyn.MagazynId);
-            ViewData["User"] = magazyn.Id;
+            ViewData["Id"] = magazyn.Id;
             return View(magazyn);
         }
 

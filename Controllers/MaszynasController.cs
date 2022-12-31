@@ -178,8 +178,17 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", maszyna.Id);
-            return View(maszyna);
+            if (string.Compare(User.FindFirstValue(ClaimTypes.NameIdentifier), maszyna.Id) == 0 || User.IsInRole("admin"))
+            {
+                ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", maszyna.MaszynaId);
+                ViewData["Id"] = maszyna.Id;
+                return View(maszyna);
+
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         // POST: Maszynas/Edit/5
@@ -188,15 +197,32 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna)
+        public async Task<IActionResult> Edit(int maszid, [Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna, IFormFile? picture)
         {
-            if (id != maszyna.MaszynaId)
+            if (maszid != maszyna.MaszynaId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                if (picture != null && picture.Length > 0)
+                {
+                    ImageFileUplM imageFileResult = new(_hostEnvironment);
+                    FileSendRes fileSendResult = imageFileResult.SendFile(picture, "grafika", 600);
+                    if (fileSendResult.Success)
+                    {
+                        maszyna.Graphic = fileSendResult.Name;
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
+                        ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", maszyna.MaszynaId);
+                        ViewData["Id"] = maszyna.Id;
+                        return View(maszyna);
+                    }
+                }
+
                 try
                 {
                     _context.Update(maszyna);
@@ -215,7 +241,8 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", maszyna.Id);
+            ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", maszyna.MaszynaId);
+            ViewData["Id"] = maszyna.Id;
             return View(maszyna);
         }
 

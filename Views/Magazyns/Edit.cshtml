@@ -4,15 +4,17 @@
     ViewData["Title"] = "Edytuj";
 }
 
-<h1 class="text-primary Roboto">Edycja</h1
+<h1 class="text-primary roboto">Edycja</h1>
 
 <h4>Magazyn</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="MagazynId" />
+            <input type="hidden" asp-for="Graphic" />
+            <input type="hidden" asp-for="Id" value="@ViewBag.Id">
             <div class="form-group">
                 <label asp-for="MagazynName" class="control-label"></label>
                 <input asp-for="MagazynName" class="form-control" />
@@ -25,6 +27,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Graphic" class="control-label"></label>
+                <br />
+<img src="@Url.Content(Model.Graphic != null ? "~/grafika/magazyny/" + Model.Graphic :"~/grafika/magazyny/brak.jpg")" width="150" />
+<input type="file" name="picture" id="picture" class="form-control" accept=".jpg,.gif,.png" />
                 <input asp-for="Graphic" class="form-control" />
                 <span asp-validation-for="Graphic" class="text-danger"></span>
             </div>
@@ -37,11 +42,6 @@
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Display" /> @Html.DisplayNameFor(model => model.Display)
                 </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <select asp-for="Id" class="form-control" asp-items="ViewBag.Id"></select>
-                <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Zapisz" class="btn btn-outline-light" id="maszynabtn"/>
