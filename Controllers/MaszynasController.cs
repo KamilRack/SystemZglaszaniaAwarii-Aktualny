@@ -197,9 +197,9 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int maszid, [Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna, IFormFile? picture)
+        public async Task<IActionResult> Edit(int maszynaid, [Bind("MaszynaId,MaszynaName,MaszynaOpis,Graphic,Active,Display,Id")] Maszyna maszyna, IFormFile? picture)
         {
-            if (maszid != maszyna.MaszynaId)
+            if (maszynaid != maszyna.MaszynaId)
             {
                 return NotFound();
             }

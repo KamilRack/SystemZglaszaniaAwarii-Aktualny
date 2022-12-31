@@ -1,7 +1,7 @@
 ﻿@model SystemZglaszaniaAwariiGlowny.Models.Maszyna
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edycja";
 }
 
 <h1 class="text-primary roboto">Edycja</h1>
@@ -29,8 +29,7 @@
                 <label asp-for="Graphic" class="control-label"></label>
                 <br />
                 <img src="@Url.Content(Model.Graphic != null ? "~/grafika/maszyny/" + Model.Graphic :"~/grafika/maszyny/brak.jpg")" width="150" />
-                <input type="file" name="picture" id="picture" class="form-control" accept=".jpg,.gif,.png" />
-                <input asp-for="Graphic" class="form-control" />
+                <input type="file" name="picture" id="picture" class="form-control" accept=".jpg,.gif,.png" /> 
                 <span asp-validation-for="Graphic" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -45,15 +44,12 @@
             </div>   
             <div class="form-group">
                 <input type="submit" value="Dodaj" class="btn btn-outline-light" id="maszynabtn" />
-                <a asp-action="Index" class="btn btn-outline-light" id="maszynabtn">Powrót do spisu</a>
+                <a asp-action="Details" class="btn btn-outline-light" id="maszynabtn">Powrót do spisu</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-   
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
