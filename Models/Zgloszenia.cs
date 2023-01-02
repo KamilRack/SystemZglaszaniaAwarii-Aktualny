@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace SystemZglaszaniaAwariiGlowny.Models
 {
@@ -19,7 +20,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
         [Required]
         [Display(Name = "Data dodania")]
         [DataType(DataType.Date, ErrorMessage = "Niepoprawny format daty")]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy hh:mm tt")]
         public System.DateTime AddedDate { get; set; }
 
         [Display(Name = " Nazwa magazynu ")]
@@ -40,6 +41,13 @@ namespace SystemZglaszaniaAwariiGlowny.Models
 
         [ForeignKey("Id")]
         public virtual AppUser? User { get; set; }
+
+        [Display(Name = " Osoba realizaująca:")]
+        [DefaultValue("Brak")]
+        public int MechanikId { get; set; }
+
+        [ForeignKey("MechanikId")]
+        public virtual Mechanik? Mechanik { get; set; }
 
     }
 }

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SystemZglaszaniaAwariiGlowny.Models.Zgloszenia>
+
+@{
+    ViewData["Title"] = "Lista zgłoszeń";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AwariaOpis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Magazyn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maszyna)
+            </th>
+            <th>
+                Dodał:
+            </th>
+            <th>
+                Osoba realizująca:
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AwariaOpis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+              
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Magazyn.MagazynName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maszyna.MaszynaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mechanik.MechanikName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ZgloszeniaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ZgloszeniaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ZgloszeniaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

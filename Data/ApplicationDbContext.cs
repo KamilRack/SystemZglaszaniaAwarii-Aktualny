@@ -17,6 +17,7 @@ namespace SystemZglaszaniaAwariiGlowny.Data
         public DbSet<Maszyna>? Maszynas { get; set; }
         public DbSet<AppUser>? AppUsers { get; set; }
 
+        public DbSet<Mechanik> Mechaniks { get; set; }
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
             base.OnModelCreating(modelbuilder);
@@ -45,7 +46,15 @@ namespace SystemZglaszaniaAwariiGlowny.Data
             .HasOne(u => u.User)
             .WithMany(u => u.Zgloszenias);
 
-           
+            modelbuilder.Entity<Zgloszenia>()
+         .HasOne(m => m.Mechanik)
+         .WithMany(m => m.Zgloszenias);
+
+
+            modelbuilder.Entity<Mechanik>()
+            .HasMany(m => m.Zgloszenias)
+            .WithOne(m => m.Mechanik);
+
         }
     }
 }
