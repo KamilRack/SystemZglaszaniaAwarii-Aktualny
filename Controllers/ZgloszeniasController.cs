@@ -133,10 +133,20 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             {
                 return NotFound();
             }
-            ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", zgloszenia.MagazynId);
-            ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", zgloszenia.MaszynaId);
-            ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikName", zgloszenia.MechanikId);
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", zgloszenia.Id);
+            if (string.Compare(User.FindFirstValue(ClaimTypes.NameIdentifier), zgloszenia.Id) == 0 || User.IsInRole("admin"))
+            {
+                  ViewData["ZgloszeniaId"] = new SelectList(_context.Zgloszenias, "ZgloszeniaId", "ZgloszeniaId", zgloszenia.ZgloszeniaId);
+                  ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", zgloszenia.MagazynId);
+                  ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", zgloszenia.MaszynaId);
+                  ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikName", zgloszenia.MechanikId);
+                  ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", zgloszenia.Id);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+          
             return View(zgloszenia);
         }
 
@@ -145,9 +155,9 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,Id,MechanikId")] Zgloszenia zgloszenia)
+        public async Task<IActionResult> Edit(int zgloszeniaid, [Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,Id,MechanikId")] Zgloszenia zgloszenia)
         {
-            if (id != zgloszenia.ZgloszeniaId)
+            if (zgloszeniaid != zgloszenia.ZgloszeniaId)
             {
                 return NotFound();
             }
@@ -172,10 +182,12 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ZgloszeniaId"] = new SelectList(_context.Zgloszenias, "ZgloszeniaId", "ZgloszeniaId", zgloszenia.ZgloszeniaId);
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", zgloszenia.MagazynId);
             ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", zgloszenia.MaszynaId);
             ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikName", zgloszenia.MechanikId);
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", zgloszenia.Id);
+            //ViewData["Id"] = zgloszenia.Id;
+            ViewData["Id"] = zgloszenia.Id;
             return View(zgloszenia);
         }
 
