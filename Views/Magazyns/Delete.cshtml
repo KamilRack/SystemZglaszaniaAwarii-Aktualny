@@ -6,12 +6,11 @@
 
 <h1 class="text-primary Roboto">Usuwanie</h1>
 
-
 @{
     if (!String.IsNullOrEmpty(ViewBag.DeleteMessage))
     {
         
-<h5 class="alert alert-info" role="alert"> @ViewBag.DeleteMessage </h5>
+        <h5 class="alert alert-info" role="alert"> @ViewBag.DeleteMessage </h5>
 
     }
     else
@@ -78,6 +77,6 @@
                 }
             }
 
-        <a asp-action="Index" class="btn btn-outline-light" id="maszynabtn">Powrót do spisu</a>
+        <a asp-action="List" class="btn btn-outline-light" id="maszynabtn">Powrót do spisu</a>
     </form>
 </div>

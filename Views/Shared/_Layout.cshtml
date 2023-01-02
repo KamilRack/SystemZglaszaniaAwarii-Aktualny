@@ -31,6 +31,22 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">O Firmie</a>
                         </li>
                         
+                         @{
+                        if (User.IsInRole("admin")||User.IsInRole("mechanik")||User.IsInRole("pracownik"))
+                            {
+                              <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenias" asp-action="Index">Zgłoszenia</a>
+                               </li> 
+                                 
+                            }
+                        }
+
+
+
+
+
+
+
                         @{
                         if (User.IsInRole("admin"))
                             {

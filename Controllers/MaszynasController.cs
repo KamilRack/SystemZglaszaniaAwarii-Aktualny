@@ -146,7 +146,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
 
                 _context.Add(maszyna);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
 
                 //      }
 
@@ -187,7 +187,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
         }
 
@@ -239,7 +239,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", maszyna.MaszynaId);
             ViewData["Id"] = maszyna.Id;
@@ -289,7 +289,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(List));
         }
 
         private bool MaszynaExists(int id)

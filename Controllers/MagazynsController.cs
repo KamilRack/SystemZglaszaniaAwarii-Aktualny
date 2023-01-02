@@ -159,7 +159,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
 
                         _context.Add(magazyn);
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction(nameof(List));
 
               //      }
 
@@ -200,7 +200,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
 
            
@@ -257,7 +257,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(List));
             }
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", magazyn.MagazynId);
             ViewData["Id"] = magazyn.Id;
@@ -282,7 +282,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
 
 
-            if (TextsInCategory(id))
+            if (MagazynZgloszenia(id))
             {
                 ViewBag.DeleteMessage = "Nie można usunąć wybranego Magazynu, gdyż posiada przypisane zgłoszenia.";
             }
@@ -306,7 +306,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(List));
         }
 
         private bool MagazynExists(int id)
@@ -328,6 +328,12 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         private bool TextsInCategory(int id)
         {
             return (_context.Magazyns?.Any(t => t.MagazynId == id)).GetValueOrDefault();
+        }
+        
+        private bool MagazynZgloszenia(int id)
+        {
+            return (_context.Zgloszenias?.Any(t => t.MaszynaId == id)).GetValueOrDefault();
+
         }
 
 
