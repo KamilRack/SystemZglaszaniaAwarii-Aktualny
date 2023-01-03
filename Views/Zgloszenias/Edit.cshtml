@@ -1,10 +1,10 @@
 ﻿@model SystemZglaszaniaAwariiGlowny.Models.Zgloszenia
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edycja";
 }
 
-<h1>Edit</h1>
+<h1>Edycja</h1>
 
 <h4>Zgloszenia</h4>
 <hr />
@@ -49,16 +49,26 @@
                 <span asp-validation-for="MechanikId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz edycję" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Powrót do spisu</a>
+    @{
+        if (User.IsInRole("admin"))
+        {
+
+
+            <a asp-action="List">Powrót do listy awarii</a>
+        }
+    }
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

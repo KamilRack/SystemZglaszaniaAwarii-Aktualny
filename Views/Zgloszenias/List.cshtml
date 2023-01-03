@@ -4,12 +4,9 @@
     ViewData["Title"] = "Lista zgłoszeń";
 }
 
-<h1>Index</h1>
+<h1>Lista zgłoszeń</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table col-sm-12 col-12">
     <thead>
         <tr>
             <th>
@@ -37,35 +34,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AwariaOpis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-              
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Magazyn.MagazynName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Maszyna.MaszynaName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mechanik.MechanikFullname)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ZgloszeniaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ZgloszeniaId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ZgloszeniaId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AwariaOpis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Magazyn.MagazynName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Maszyna.MaszynaName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Mechanik.MechanikFullname)
+                </td>
+                <td>
+                    <div>
+                        <a asp-action="Edit" asp-route-id="@item.MaszynaId" class="btn btn-outline-primary my-2" title="Edycja"><i class="bi bi-file-plus" aria-label="Edycja maszyny"></i></a>
+                        <a asp-action="Details" asp-route-id="@item.MaszynaId" class="btn btn-outline-secondary my-2" title="Szczegóły"><i class="bi bi-search" aria-label="Szczegóły maszyny"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.MaszynaId" class="btn btn-outline-danger my-2" title="Usuwanie"><i class="bi bi-trash3" aria-label="Usuwanie maszyny"></i></a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

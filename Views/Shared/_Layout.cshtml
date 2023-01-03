@@ -35,9 +35,12 @@
                         if (User.IsInRole("admin")||User.IsInRole("mechanik")||User.IsInRole("pracownik"))
                             {
                               <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenias" asp-action="Create">Zgłoś awarię</a>
+                               </li>
+                                <li class="nav-item">
                                     <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenias" asp-action="Index">Zgłoszenia</a>
-                               </li> 
-                                 
+                                </li>
+
                             }
                         }
 
@@ -73,27 +76,36 @@
                                 </li>
                             }
                         }
-                            </li>
-                        
+                        </li>
 
-                              @{
-                        if (User.IsInRole("pracownik") ||User.IsInRole("mechanik"))
+                        @{
+                            if (User.IsInRole("pracownik") || User.IsInRole("mechanik"))
                             {
-                               
-                                 <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" role="button"data-bs-toggle="dropdown" aria-expanded="false"> Spis</a>
-                        
-                            <ul class="dropdown-menu">
-                                 
-                                 <li class="nav-item">
-                                    <a class="dropdown-item nav-link text-dark" asp-area=""asp-controller="Magazyns" asp-action="Index">Magazyny</a>
-                                 </li>
 
-                                   <li class="nav-item">
-                                    <a class="dropdown-item nav-link text-dark" asp-area=""asp-controller="Maszynas" asp-action="Index">Maszyny</a>
-                                 </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Spis</a>
 
-                            </ul>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="nav-item">
+                                            <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Magazyns" asp-action="Index">Magazyny</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Maszynas" asp-action="Index">Maszyny</a>
+                                        </li>
+                                        @{
+                                            if (User.IsInRole("mechanik"))
+                                            {
+
+
+
+                                                <li class="nav-item">
+                                                    <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Zgloszenias" asp-action="List">Lista zgłoszeń</a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
                                 </li>
                             }
                         }

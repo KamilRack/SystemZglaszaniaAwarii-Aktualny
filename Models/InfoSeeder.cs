@@ -20,6 +20,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     SeedMaszyns(dbContext);
                     SeedMagazyns(dbContext);
                     SeedMechanics(dbContext);
+                    SeedZgloszenias(dbContext);
                  
                 }
            
@@ -338,5 +339,67 @@ namespace SystemZglaszaniaAwariiGlowny.Models
         }
 
 
+        private static void SeedZgloszenias(ApplicationDbContext dbContext)
+        {
+            if (!dbContext.Zgloszenias.Any())
+            {
+                for (int i = 1; i <= 1; i++)
+                {
+                    var idUzytkownika1 = dbContext.AppUsers
+                    .Where(u => u.UserName == "pracownik@awaria.pl")
+                    .FirstOrDefault()
+                     .Id;
+
+                    for (int j = 1; j <= 1; j++) //teksty autora1
+                    {
+                        var awaria1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się świeca podgrzewająca drut spawalniczy",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 1,
+                            MaszynaId = 2,
+                            Id = idUzytkownika1,
+                            MechanikId = 2
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(awaria1);
+                    }
+
+                    var idUzytkownika2 = dbContext.AppUsers
+                     .Where(u => u.UserName == "pracownik@awaria.pl")
+                     .FirstOrDefault()
+                      .Id;
+
+                    for (int j = 1; j <= 1; j++) //teksty autora1
+                    {
+                        var awaria2 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuł się kabel zasilający maszynę",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 3,
+                            MaszynaId = 3,
+                            Id = idUzytkownika2,
+                            MechanikId = 2
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(awaria2);
+                        dbContext.SaveChanges();
+
+
+
+                    }
+                }
+            }
+        }
     }
 }
