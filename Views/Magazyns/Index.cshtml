@@ -99,6 +99,19 @@
             </ul>
         </nav>
         <div>
+
+       @{
+            if(User.IsInRole("admin"))
+                    {
+                        <a asp-action="List" class="btn btn-outline-light" id="maszynabtn">Przejdz do widoku Administratora</a>   
+    
+                    }
+                }      
+
+
+            
+            
+            
 </div>
 
       
