@@ -14,7 +14,8 @@ namespace SystemZglaszaniaAwariiGlowny.Models
         public string AwariaOpis { get; set; }
         [Required]
         [Display(Name = "Czy awaria nadal trwa?")]
-      
+        [DefaultValue(true)]
+
         public bool Active { get; set; }
 
         [Required]

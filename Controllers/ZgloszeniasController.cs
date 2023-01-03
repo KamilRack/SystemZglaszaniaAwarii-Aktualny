@@ -102,13 +102,16 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //  public async Task<IActionResult> Create([Bind("ZgloszeniaId,AwariaOpis,Active,MagazynId,MaszynaId,MechanikId")] Zgloszenia zgloszenia)
-        public async Task<IActionResult> Create([Bind("ZgloszeniaId,AwariaOpis,Active,MagazynId,MaszynaId")] Zgloszenia zgloszenia)
+        public async Task<IActionResult> Create([Bind("ZgloszeniaId,AwariaOpis,Active,MagazynId,MaszynaId,MechanikId")] Zgloszenia zgloszenia)
         {
+           
             if (ModelState.IsValid)
             {
+                
                  zgloszenia.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                  zgloszenia.AddedDate = DateTime.Now;
                  zgloszenia.MechanikId = 1;
+                 zgloszenia.Active = true;
                 _context.Add(zgloszenia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -133,7 +136,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             {
                 return NotFound();
             }
-            if (string.Compare(User.FindFirstValue(ClaimTypes.NameIdentifier), zgloszenia.Id) == 0 || User.IsInRole("admin"))
+            if (string.Compare(User.FindFirstValue(ClaimTypes.NameIdentifier), zgloszenia.Id) == 0 || User.IsInRole("admin") || User.IsInRole("mechanik"))
             {
                   ViewData["ZgloszeniaId"] = new SelectList(_context.Zgloszenias, "ZgloszeniaId", "ZgloszeniaId", zgloszenia.ZgloszeniaId);
                   ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", zgloszenia.MagazynId);

@@ -19,6 +19,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     SeedUsers(dbContext);
                     SeedMaszyns(dbContext);
                     SeedMagazyns(dbContext);
+                    SeedMechanics(dbContext);
                  
                 }
            
@@ -241,6 +242,100 @@ namespace SystemZglaszaniaAwariiGlowny.Models
             }
         }
 
+        private static void SeedMechanics(ApplicationDbContext dbContext)
+        {
+            if (!dbContext.Mechaniks.Any())
+            {
+                for (int i = 1; i <= 1; i++) //sześć kategorii
+                {
+                //    var idUzytkownika1 = dbContext.AppUsers
+                //    .Where(u => u.UserName == "admin@awaria.pl")
+                //     .FirstOrDefault()
+                //     .Id;
+
+                    for (int j = 1; j <= 1; j++) //teksty autora1
+                    {
+                        var mechanik0 = new Mechanik()
+                        {
+
+                            MechanikName = "Brak",
+                            MechanikNazwisko = ".",
+                            
+
+
+                        };
+                        dbContext.Set<Mechanik>().Add(mechanik0);
+                    }
+                    dbContext.SaveChanges();
+
+
+
+                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    {
+                        var mechanik1 = new Mechanik()
+                        {
+
+                            MechanikName = "Kamil",
+                            MechanikNazwisko = "Lewandowski",
+
+
+
+                        };
+                        dbContext.Set<Mechanik>().Add(mechanik1);
+                    }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    {
+                        var mechanik1 = new Mechanik()
+                        {
+
+                            MechanikName = "Adrian",
+                            MechanikNazwisko = "Nowak",
+
+
+
+                        };
+                        dbContext.Set<Mechanik>().Add(mechanik1);
+                    }
+                    dbContext.SaveChanges();
+
+
+
+                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    {
+                        var mechanik1 = new Mechanik()
+                        {
+
+                            MechanikName = "Krzysztof",
+                            MechanikNazwisko = "Kowalski",
+
+
+
+                        };
+                        dbContext.Set<Mechanik>().Add(mechanik1);
+                    }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    {
+                        var mechanik1 = new Mechanik()
+                        {
+
+                            MechanikName = "Ludwik",
+                            MechanikNazwisko = "Por",
+
+
+
+                        };
+                        dbContext.Set<Mechanik>().Add(mechanik1);
+                    }
+                    dbContext.SaveChanges();
+                }
+            }
+        }
 
 
     }
