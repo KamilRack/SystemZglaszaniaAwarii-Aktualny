@@ -35,10 +35,10 @@
                         if (User.IsInRole("admin")||User.IsInRole("mechanik")||User.IsInRole("pracownik"))
                             {
                               <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenias" asp-action="Create">Zgłoś awarię</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenia" asp-action="Create">Zgłoś awarię</a>
                                </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenias" asp-action="Index">Zgłoszenia</a>
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Zgloszenia" asp-action="Index">Zgłoszenia</a>
                                 </li>
 
                             }
@@ -68,7 +68,7 @@
                                  </li>
 
                                  <li class="nav-item">
-                                    <a class="dropdown-item nav-link text-dark" asp-area=""asp-controller="Zgloszenias" asp-action="List">Zgłoszenia</a>
+                                            <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Zgloszenia" asp-action="List">Zgłoszenia</a>
                                  </li>
 
 
@@ -101,7 +101,7 @@
 
 
                                                 <li class="nav-item">
-                                                    <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Zgloszenias" asp-action="List">Lista zgłoszeń</a>
+                                                    <a class="dropdown-item nav-link text-dark" asp-area="" asp-controller="Zgloszenia" asp-action="List">Lista zgłoszeń</a>
                                                 </li>
                                             }
                                         }

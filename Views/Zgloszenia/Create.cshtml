@@ -1,35 +1,41 @@
 ﻿@model SystemZglaszaniaAwariiGlowny.Models.Zgloszenia
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Zgłoś awarię";
 }
 
-<h1>Create</h1>
+<h1 class="text-warning">Zgłoś awarię</h1>
 
-<h4>Zgloszenia</h4>
+<h4>Kreator awarii</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="row" id="zglcreate">
+    <div>
+        <form asp-action="Create" id="zglcreate1">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group col-lg-8 col-xl-12">
                 <label asp-for="AwariaOpis" class="control-label"></label>
-                <input asp-for="AwariaOpis" class="form-control" />
+                <textarea asp-for="AwariaOpis" class="form-control"></textarea>
                 <span asp-validation-for="AwariaOpis" class="text-danger"></span>
             </div>
+           
 
-            <div class="form-group">
-                <label asp-for="MagazynId" class="control-label"></label>
-                <select asp-for="MagazynId" class="form-control" asp-items="ViewBag.MagazynId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="MaszynaId" class="control-label"></label>
-                <select asp-for="MaszynaId" class="form-control" asp-items="ViewBag.MaszynaId"></select>
-            </div>
-            @{
-                if (User.IsInRole("admin"))
+               @{
+                if (User.IsInRole("admin") || (User.IsInRole("mechanik")))
                 {
+                         <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
+                    </label>
+                </div>
 
+                        
+                        
+                }
+                }
+
+                @{
+                    if(User.IsInRole("admin"))
+                    {
                     <div class="form-group">
                         <label asp-for="AddedDate" class="control-label"></label>
                         <input asp-for="AddedDate" class="form-control" />
@@ -39,34 +45,43 @@
                         <label asp-for="Id" class="control-label"></label>
                         <select asp-for="Id" class="form-control" asp-items="ViewBag.Id"></select>
                     </div>
-                }
-            }
-            @{
-                if (User.IsInRole("admin") || (User.IsInRole("mechanik")))
-                {
-
                     <div class="form-group">
                         <label asp-for="MechanikId" class="control-label"></label>
                         <select asp-for="MechanikId" class="form-control" asp-items="ViewBag.MechanikId"></select>
                     </div>
-                    <div class="form-group form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" asp-for="Active" /> @Html.DisplayNameFor(model => model.Active)
-                        </label>
-                    </div>
+
+                    }
                 }
-            }
+          
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <label asp-for="MagazynId" class="control-label"></label>
+                <select asp-for="MagazynId" class ="form-control" asp-items="ViewBag.MagazynId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaszynaId" class="control-label"></label>
+                <select asp-for="MaszynaId" class ="form-control" asp-items="ViewBag.MaszynaId"></select>
+            </div>
+
+            <div class="form-group">
+                <input class="col-sm-12 col-12 col-md-6" type="submit" value="Zgłoś" class="btn btn-outline-light" id="maszynabtn" />
+                <a asp-action="Index" class="btn btn-outline-light col-sm-12 col-12 col-md-6" id="maszynabtn">Powrót do spisu awarii</a>
+                @{
+                    if (User.IsInRole("admin") || (User.IsInRole("mechanik")))
+                    {
+
+
+                        <a asp-action="List" class="btn btn-outline-light col-12 col-sm-12 col-md-6" id="maszynabtn">Powrót do listy awarii</a>
+                    }
+                }
+
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

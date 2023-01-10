@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SystemZglaszaniaAwariiGlowny.Data;
 using SystemZglaszaniaAwariiGlowny.Models;
+using SystemZglaszaniaAwariiGlowny.Models.ModelView;
 
 namespace SystemZglaszaniaAwariiGlowny.Controllers
 {
@@ -21,13 +23,40 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         }
 
         // GET: Zgloszenia
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int PageNumber = 1)
+        {
+            ZgloszeniaViewModel zgloszeniaViewModel = new();
+            zgloszeniaViewModel.MMView = new MMView();
+
+            zgloszeniaViewModel.MMView.MMCount = _context.Zgloszenias
+            .Where(t => t.Active == true)
+            .Count();
+
+            zgloszeniaViewModel.MMView.PageNumber = PageNumber;
+
+            zgloszeniaViewModel.Zgloszenias = (IEnumerable<Zgloszenia>?)await _context.Zgloszenias
+            .Include(t => t.Magazyn)
+            .Include(t => t.Maszyna)
+            .Include(t => t.Mechanik)
+            .Include(t => t.User)
+            .Where(t => t.Active == true)
+            .OrderByDescending(t => t.AddedDate)
+            .Skip((PageNumber - 1) * zgloszeniaViewModel.MMView.PageSize)
+            .Take(zgloszeniaViewModel.MMView.PageSize)
+            .ToListAsync();
+
+
+            return View(zgloszeniaViewModel);
+        }
+        [Authorize(Roles = "admin, mechanik")]
+        public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Zgloszenias.Include(z => z.Magazyn).Include(z => z.Maszyna).Include(z => z.Mechanik).Include(z => z.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Zgloszenia/Details/5
+        [Authorize(Roles = "admin, mechanik")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Zgloszenias == null)
@@ -49,7 +78,9 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             return View(zgloszenia);
         }
 
+
         // GET: Zgloszenia/Create
+        [Authorize(Roles = "admin, mechanik, pracownik")]
         public IActionResult Create()
         {
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName");
@@ -62,6 +93,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         // POST: Zgloszenia/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin, mechanik, pracownik")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,Id,MechanikId")] Zgloszenia zgloszenia)
@@ -84,6 +116,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         }
 
         // GET: Zgloszenia/Edit/5
+        [Authorize(Roles = "admin, mechanik")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Zgloszenias == null)
@@ -98,7 +131,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", zgloszenia.MagazynId);
             ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", zgloszenia.MaszynaId);
-            ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikName", zgloszenia.MechanikId);
+            ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikFullname", zgloszenia.MechanikId);
             ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", zgloszenia.Id);
             return View(zgloszenia);
         }
@@ -106,11 +139,12 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         // POST: Zgloszenia/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin, mechanik")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,Id,MechanikId")] Zgloszenia zgloszenia)
+        public async Task<IActionResult> Edit(int zgloszeniaid, [Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,MechanikId")] Zgloszenia zgloszenia)
         {
-            if (id != zgloszenia.ZgloszeniaId)
+            if (zgloszeniaid != zgloszenia.ZgloszeniaId)
             {
                 return NotFound();
             }
@@ -119,6 +153,8 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             {
                 try
                 {
+                    zgloszenia.AddedDate = DateTime.Now;
+                    zgloszenia.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     _context.Update(zgloszenia);
                     await _context.SaveChangesAsync();
                 }
@@ -137,12 +173,13 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             }
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName", zgloszenia.MagazynId);
             ViewData["MaszynaId"] = new SelectList(_context.Maszynas, "MaszynaId", "MaszynaName", zgloszenia.MaszynaId);
-            ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikName", zgloszenia.MechanikId);
+            ViewData["MechanikId"] = new SelectList(_context.Mechaniks, "MechanikId", "MechanikFullname", zgloszenia.MechanikId);
             ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", zgloszenia.Id);
             return View(zgloszenia);
         }
 
         // GET: Zgloszenia/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Zgloszenias == null)
@@ -165,6 +202,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         }
 
         // POST: Zgloszenia/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -1,14 +1,18 @@
 ﻿@model SystemZglaszaniaAwariiGlowny.Models.Zgloszenia
 
+
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Usuwanie awarii";
 }
 
-<h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h1>Usuwanie zgłoszenia</h1>
+
+
+
+<h3 class="text-bg-danger">Czy na pewno chcesz usunąć te zgłoszenie?</h3>
 <div>
-    <h4>Zgloszenia</h4>
+  
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -23,12 +27,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Active)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AddedDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AddedDate)
-        </dd>
+      
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Magazyn)
         </dt>
@@ -55,9 +54,22 @@
         </dd>
     </dl>
     
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ZgloszeniaId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        @{
+            if (User.IsInRole("admin"))
+            {
+            
+                <input type="submit" value="Usuń" class="btn btn-danger col-md-6" />
+                <a asp-action="Index" class="btn btn-outline-light col-sm-12 col-12 col-md-6" id="maszynabtn">Powrót do spisu </a>
+                <a asp-action="List" class="btn btn-outline-light col-sm-12 col-12 col-md-6" id="maszynabtn">Powrót do listy </a>
+            }
+            }
+         
     </form>
+
+
+   
+               
 </div>

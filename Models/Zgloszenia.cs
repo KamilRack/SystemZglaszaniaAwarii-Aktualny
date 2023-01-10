@@ -18,10 +18,10 @@ namespace SystemZglaszaniaAwariiGlowny.Models
 
         public bool Active { get; set; }
 
-        [Required]
+        
         [Display(Name = "Data dodania")]
         [DataType(DataType.Date, ErrorMessage = "Niepoprawny format daty")]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy hh:mm tt")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy hh:mm")]
         public System.DateTime AddedDate { get; set; }
 
         [Display(Name = " Nazwa magazynu ")]

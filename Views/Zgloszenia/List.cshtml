@@ -1,0 +1,114 @@
+﻿@model IEnumerable<SystemZglaszaniaAwariiGlowny.Models.Zgloszenia>
+
+@{
+    ViewData["Title"] = "Lista zgłoszeń";
+}
+
+<h1 class="text-primary">Lista zgłoszeń</h1>
+
+<table class="table" id="zgloszenia">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AwariaOpis)
+            </th>
+            <th>
+               Czy awaria nadal w realizacji?
+            </th>
+            <th>
+               
+            </th>
+            <th>
+                Nazwa magazynu:
+            </th>
+            <th>
+                Nazwa maszyny:
+            </th>
+            <th>
+                Użytkownik zgłaszający:
+            </th>
+            <th>
+                Osoba realizująca:
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AwariaOpis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+            
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Magazyn.MagazynName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maszyna.MaszynaName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mechanik.MechanikFullname)
+            </td>
+            <td>
+                    <div class="col-4">
+                        <a asp-action="Edit" asp-route-id="@item.ZgloszeniaId" class="btn btn-outline-primary my-2" title="Edycja"><i class="bi bi-file-plus" aria-label="Edycja maszyny"></i></a>
+                        <a asp-action="Details" asp-route-id="@item.ZgloszeniaId" class="btn btn-outline-secondary my-2" title="Szczegóły"><i class="bi bi-search" aria-label="Szczegóły maszyny"></i></a>
+
+                          @{
+                    if (User.IsInRole("admin"))
+                    {
+                                <a asp-action="Delete" asp-route-id="@item.ZgloszeniaId" class="btn btn-outline-danger my-2" title="Usuwanie"><i class="bi bi-trash3" aria-label="Usuwanie maszyny"></i></a>
+                    }
+                    }
+                      
+                    </div>
+            </td>
+        </tr>
+}
+<hr />  
+</tbody>
+</table>
+
+
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#zgloszenia').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Szukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+    </script>
+}

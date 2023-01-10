@@ -31,9 +31,17 @@ html {
     text-align: center;
 }
 
+.table th, .table td {
+    text-align: center;
+}
 
 
-
+#zglcreate1, #zglcreate {
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    
+}
 body {
     margin-bottom: 60px;
     font-family: 'Roboto', sans-serif;
