@@ -20,7 +20,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     SeedMaszyns(dbContext);
                     SeedMagazyns(dbContext);
                     SeedMechanics(dbContext);
-                    SeedZgloszenias(dbContext);
+                    SeedZgloszeniaAdd(dbContext);
                  
                 }
            
@@ -93,6 +93,30 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                 dbContext.SaveChanges();
             }
 
+            if (!dbContext.Users.Any(u => u.UserName == "pracownik2@awaria.pl"))
+            {
+                var user = new AppUser
+                {
+                    UserName = "pracownik2@awaria.pl",
+                    NormalizedUserName = "pracownik2@awaria.pl",
+                    Email = "pracownik2@awaria.pl",
+                    EmailConfirmed = true,
+                    LockoutEnabled = false,
+                    FirstName = "Jan",
+                    LastName = "Konrad",
+                    Information = "Nowak"
+                };
+                var password = new PasswordHasher<AppUser>();
+                var hashed = password.HashPassword(user, "Pracownik1!");
+                user.PasswordHash = hashed;
+
+                var userStore = new UserStore<AppUser>(dbContext);
+                userStore.CreateAsync(user).Wait();
+                userStore.AddToRoleAsync(user, "pracownik").Wait();
+
+                dbContext.SaveChanges();
+            }
+
             if (!dbContext.Users.Any(u => u.UserName == "mechanik@awaria.pl"))
             {
                 var user = new AppUser
@@ -147,20 +171,20 @@ namespace SystemZglaszaniaAwariiGlowny.Models
         {
             if (!dbContext.Magazyns.Any())
             {
-                for (int i = 1; i <= 1; i++) //sześć kategorii
+                for (int i = 1; i <= 1; i++)
                 {
                     var idUzytkownika1 = dbContext.AppUsers
                     .Where(u => u.UserName == "admin@awaria.pl")
                      .FirstOrDefault()
                      .Id;
 
-                    for (int j = 0; j <= 1; j++) //teksty autora1
+                    for (int j = 1; j <= 1; j++)
                     {
                         var tekst = new Magazyn()
                         {
 
-                            MagazynName = "Magazyn z opiłkami",
-                            MagazynOpis = "Magazyn z składnikami",
+                            MagazynName = "Magazyn prętów stalowych.",
+                            MagazynOpis = "Magazyn dostosowany pod przechowywanie prętów stalowych rożnych długośći. Wyposażony w odpowiednie regały. Posiada odpowiednie tory poruszania się dla pracowników jak i wózków widłowych. ",
                             Graphic = "1Mag.jpg",
                             Active = true,
                             Display = true,
@@ -172,14 +196,29 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     }
                     dbContext.SaveChanges();
 
-                   
 
-                    for (int j = 2; j <= 2; j++) //teksty autora2
+
+                    for (int j = 1; j <= 1; j++) 
                     {
                         var tekst = new Magazyn()
                         {
-                            MagazynName = "Magazyn z betonem",
-                            MagazynOpis = "Magazyn z substancjami",
+                            MagazynName = "Magazyn części spawalniczych",
+                            MagazynOpis = "Magazyn z częściami spawalniczymi. Przystosowany do przechowywania dużych ilości części przy minimalnym zagospodarowaniu przestrzeni.",
+                            Graphic = "3Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++) 
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn maszyn ",
+                            MagazynOpis = "Magazyn z maszynami wykorzystywanych na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
                             Graphic = "2Mag.jpg",
                             Active = true,
                             Display = true,
@@ -188,6 +227,148 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                         dbContext.Set<Magazyn>().Add(tekst);
                     }
                     dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn robotów ",
+                            MagazynOpis = "Magazyn z robotami wykorzystywanych na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "1Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn konstrukcji stalowych ",
+                            MagazynOpis = "Magazyn z konstrukcjami stalowymi wykorzystywanymi na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "2Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn konstrukcji drewnianych ",
+                            MagazynOpis = "Magazyn z konstrukcjami drewnianymi wykorzystywanymi na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "3Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+
+                            MagazynName = "Magazyn prętów stalowych.",
+                            MagazynOpis = "Magazyn dostosowany pod przechowywanie prętów stalowych rożnych długośći. Wyposażony w odpowiednie regały. Posiada odpowiednie tory poruszania się dla pracowników jak i wózków widłowych. ",
+                            Graphic = "1Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+
+
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn części spawalniczych",
+                            MagazynOpis = "Magazyn z częściami spawalniczymi. Przystosowany do przechowywania dużych ilości części przy minimalnym zagospodarowaniu przestrzeni.",
+                            Graphic = "3Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn maszyn ",
+                            MagazynOpis = "Magazyn z maszynami wykorzystywanych na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "2Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn robotów ",
+                            MagazynOpis = "Magazyn z robotami wykorzystywanych na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "1Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn konstrukcji stalowych ",
+                            MagazynOpis = "Magazyn z konstrukcjami stalowymi wykorzystywanymi na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "2Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Magazyn()
+                        {
+                            MagazynName = "Magazyn konstrukcji drewnianych ",
+                            MagazynOpis = "Magazyn z konstrukcjami drewnianymi wykorzystywanymi na magazynach produkcyjnych. Ze względów na duże rozmiary maszyn produkcyjnych jest ściśle pod monitoringiem w celu zachowania BHP przez pracowników.",
+                            Graphic = "3Mag.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1,
+                        };
+                        dbContext.Set<Magazyn>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+
                 }
             }
         }
@@ -197,20 +378,20 @@ namespace SystemZglaszaniaAwariiGlowny.Models
         {
             if (!dbContext.Maszynas.Any())
             {
-                for (int i = 1; i <= 1; i++) //sześć kategorii
+                for (int i = 1; i <= 1; i++) 
                 {
                     var idUzytkownika1 = dbContext.AppUsers
                     .Where(u => u.UserName == "admin@awaria.pl")
                     .FirstOrDefault()
                     .Id;
 
-                    for (int j = 0; j <= 1; j++) //teksty autora1
+                    for (int j = 1; j <= 1; j++)
                     {
                         var tekst = new Maszyna()
                         {
 
-                            MaszynaName = "Spawarka Al-102",
-                            MaszynaOpis = "Spawarka",
+                            MaszynaName = "Spawarka model AL-320",
+                            MaszynaOpis = "Spawarka model z roku 2022. Pełni funkcje tig, mig.",
                             Graphic = "1Masz.jpg",
                             Active = true,
                             Display = true,
@@ -220,14 +401,14 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     }
                     dbContext.SaveChanges();
 
-                    
 
-                    for (int j = 2; j <= 2; j++) //teksty autora2
+
+                    for (int j = 1; j <= 1; j++)
                     {
                         var tekst = new Maszyna()
                         {
-                            MaszynaName = "Spawarka BC-300",
-                            MaszynaOpis = "Spawarka",
+                            MaszynaName = "Betoniarka AG3050",
+                            MaszynaOpis = "Betoniarka służąca do wylewania betonu",
                             Graphic = "2Masz.jpg",
                             Active = true,
                             Display = true,
@@ -237,8 +418,171 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     }
                     dbContext.SaveChanges();
 
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Maszyna pakująca",
+                            MaszynaOpis = "Maszyna służąca do pakowania części do kartonów",
+                            Graphic = "4Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
 
-                  
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Maszyna sortująca",
+                            MaszynaOpis = "Maszyna służąca do sortowania i oddzielania części",
+                            Graphic = "3Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+
+                            MaszynaName = "Spawarka model AL-320",
+                            MaszynaOpis = "Spawarka model z roku 2022. Pełni funkcje tig, mig.",
+                            Graphic = "1Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Betoniarka AG3050",
+                            MaszynaOpis = "Betoniarka służąca do wylewania betonu",
+                            Graphic = "2Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Maszyna pakująca",
+                            MaszynaOpis = "Maszyna służąca do pakowania części do kartonów",
+                            Graphic = "4Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Maszyna sortująca",
+                            MaszynaOpis = "Maszyna służąca do sortowania i oddzielania części",
+                            Graphic = "3Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+
+                            MaszynaName = "Spawarka model AL-320",
+                            MaszynaOpis = "Spawarka model z roku 2022. Pełni funkcje tig, mig.",
+                            Graphic = "1Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Betoniarka AG3050",
+                            MaszynaOpis = "Betoniarka służąca do wylewania betonu",
+                            Graphic = "2Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Maszyna pakująca",
+                            MaszynaOpis = "Maszyna służąca do pakowania części do kartonów",
+                            Graphic = "4Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var tekst = new Maszyna()
+                        {
+                            MaszynaName = "Maszyna sortująca",
+                            MaszynaOpis = "Maszyna służąca do sortowania i oddzielania części",
+                            Graphic = "3Masz.jpg",
+                            Active = true,
+                            Display = true,
+                            Id = idUzytkownika1
+                        };
+                        dbContext.Set<Maszyna>().Add(tekst);
+                    }
+                    dbContext.SaveChanges();
+
+
+
+
+
+
+
+
+
+
                 }
             }
         }
@@ -247,20 +591,15 @@ namespace SystemZglaszaniaAwariiGlowny.Models
         {
             if (!dbContext.Mechaniks.Any())
             {
-                for (int i = 1; i <= 1; i++) //sześć kategorii
-                {
-                //    var idUzytkownika1 = dbContext.AppUsers
-                //    .Where(u => u.UserName == "admin@awaria.pl")
-                //     .FirstOrDefault()
-                //     .Id;
+                for (int i = 1; i <= 1; i++) 
 
-                    for (int j = 1; j <= 1; j++) //teksty autora1
+                    for (int j = 1; j <= 1; j++) 
                     {
                         var mechanik0 = new Mechanik()
                         {
 
                             MechanikName = "Brak",
-                            MechanikNazwisko = ".",
+                            MechanikNazwisko = "",
                             
 
 
@@ -271,7 +610,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
 
 
 
-                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    for (int j = 1; j <= 1; j++) 
                     {
                         var mechanik1 = new Mechanik()
                         {
@@ -287,7 +626,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     dbContext.SaveChanges();
 
 
-                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    for (int j = 1; j <= 1; j++) 
                     {
                         var mechanik1 = new Mechanik()
                         {
@@ -304,7 +643,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
 
 
 
-                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    for (int j = 1; j <= 1; j++) 
                     {
                         var mechanik1 = new Mechanik()
                         {
@@ -320,7 +659,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     dbContext.SaveChanges();
 
 
-                    for (int j = 1; j <= 1; j++) //teksty autora2
+                    for (int j = 1; j <= 1; j++) 
                     {
                         var mechanik1 = new Mechanik()
                         {
@@ -336,70 +675,289 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                     dbContext.SaveChanges();
                 }
             }
-        }
-
-
-        private static void SeedZgloszenias(ApplicationDbContext dbContext)
+        private static void SeedZgloszeniaAdd(ApplicationDbContext dbContext)
         {
             if (!dbContext.Zgloszenias.Any())
             {
+                var idUzytkownikaZ1 = dbContext.AppUsers
+                   .Where(u => u.UserName == "pracownik@awaria.pl")
+                    .FirstOrDefault()
+                    .Id;
+
+                var idUzytkownikaZ2 = dbContext.AppUsers
+                .Where(u => u.UserName == "pracownik2@awaria.pl")
+                 .FirstOrDefault()
+                 .Id;
+
+
+
                 for (int i = 1; i <= 1; i++)
                 {
-                    var idUzytkownika1 = dbContext.AppUsers
-                    .Where(u => u.UserName == "pracownik@awaria.pl")
-                    .FirstOrDefault()
-                     .Id;
 
-                    for (int j = 1; j <= 1; j++) //teksty autora1
+                    for (int j = 1; j <= 1; j++)
                     {
-                        var awaria1 = new Zgloszenia()
+                        var zgloszenie1 = new Zgloszenia()
                         {
 
-                            AwariaOpis = "Zepsuła się świeca podgrzewająca drut spawalniczy",
+                            AwariaOpis = "Zepsuła się rączka robota spawającego",
                             Active = true,
                             AddedDate = DateTime.Now,
                             MagazynId = 1,
-                            MaszynaId = 2,
-                            Id = idUzytkownika1,
-                            MechanikId = 2
+                            MaszynaId = 1,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 2,
+
+
 
 
 
 
                         };
-                        dbContext.Set<Zgloszenia>().Add(awaria1);
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
                     }
+                    dbContext.SaveChanges();
 
-                    var idUzytkownika2 = dbContext.AppUsers
-                     .Where(u => u.UserName == "pracownik@awaria.pl")
-                     .FirstOrDefault()
-                      .Id;
-
-                    for (int j = 1; j <= 1; j++) //teksty autora1
+                    for (int j = 1; j <= 1; j++)
                     {
-                        var awaria2 = new Zgloszenia()
+                        var zgloszenie1 = new Zgloszenia()
                         {
 
-                            AwariaOpis = "Zepsuł się kabel zasilający maszynę",
+                            AwariaOpis = "Zepsuła się rączka betoniarki",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 2,
+                            MaszynaId = 3,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 3,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się koło zębate w maszynie",
                             Active = true,
                             AddedDate = DateTime.Now,
                             MagazynId = 3,
                             MaszynaId = 3,
-                            Id = idUzytkownika2,
-                            MechanikId = 2
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 4,
+
+
 
 
 
 
                         };
-                        dbContext.Set<Zgloszenia>().Add(awaria2);
-                        dbContext.SaveChanges();
-
-
-
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
                     }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Brak drutu spawalniczego w celi nr3",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 4,
+                            MaszynaId = 4,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 5,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się rączka robota spawającego",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 1,
+                            MaszynaId = 1,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 2,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się rączka betoniarki",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 2,
+                            MaszynaId = 3,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 3,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się koło zębate w maszynie",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 3,
+                            MaszynaId = 3,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 4,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Brak drutu spawalniczego w celi nr3",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 4,
+                            MaszynaId = 4,
+                            Id = idUzytkownikaZ1,
+                            MechanikId = 5,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się rączka robota spawającego",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 1,
+                            MaszynaId = 1,
+                            Id = idUzytkownikaZ2,
+                            MechanikId = 2,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się rączka betoniarki",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 2,
+                            MaszynaId = 3,
+                            Id = idUzytkownikaZ2,
+                            MechanikId = 3,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
+
+
+                    for (int j = 1; j <= 1; j++)
+                    {
+                        var zgloszenie1 = new Zgloszenia()
+                        {
+
+                            AwariaOpis = "Zepsuła się koło zębate w maszynie",
+                            Active = true,
+                            AddedDate = DateTime.Now,
+                            MagazynId = 3,
+                            MaszynaId = 3,
+                            Id = idUzytkownikaZ2,
+                            MechanikId = 4,
+
+
+
+
+
+
+                        };
+                        dbContext.Set<Zgloszenia>().Add(zgloszenie1);
+                    }
+                    dbContext.SaveChanges();
                 }
             }
         }
     }
+
+
+     
 }
+
+

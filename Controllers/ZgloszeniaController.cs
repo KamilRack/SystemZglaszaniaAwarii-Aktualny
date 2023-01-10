@@ -96,11 +96,12 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         [Authorize(Roles = "admin, mechanik, pracownik")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,Id,MechanikId")] Zgloszenia zgloszenia)
+        public async Task<IActionResult> Create([Bind("ZgloszeniaId,AwariaOpis,Active,AddedDate,MagazynId,MaszynaId,MechanikId")] Zgloszenia zgloszenia)
         {
             if (ModelState.IsValid)
             {
-                zgloszenia.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                zgloszenia.Id = User?.FindFirstValue(ClaimTypes.NameIdentifier);
                 zgloszenia.AddedDate = DateTime.Now;
                 zgloszenia.MechanikId = 1;
                 zgloszenia.Active = true;

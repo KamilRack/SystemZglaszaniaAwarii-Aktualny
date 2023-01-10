@@ -50,14 +50,14 @@
                         if (Model.MMView.PageNumber > 1)
                         {
                             <li class="page-item">
-                                <a class="page-link" href="@Url.Action("Index", "Zgloszenias", new {PageNumber = Model.MMView.PageNumber - 1})">Poprzednia</a>
+                                <a class="page-link" href="@Url.Action("Index", "Zgloszenia", new {PageNumber = Model.MMView.PageNumber - 1})">Poprzednia</a>
                             </li>
 
                         }
 
                         for (var i = 1; i <= Model.MMView.PageCount; i++)
                         {
-                            <li class="@(i == Model.MMView.PageNumber ? "page-item active": "page-active")"><a class="page-link" href="@Url.Action("Index", "Zgloszenias", new {PageNumber = i})">@i</a></li>
+                            <li class="@(i == Model.MMView.PageNumber ? "page-item active": "page-active")"><a class="page-link" href="@Url.Action("Index", "Zgloszenia", new {PageNumber = i})">@i</a></li>
                         }
 
 
@@ -65,7 +65,7 @@
 
                         if (Model.MMView.PageNumber < Model.MMView.PageCount)
                         {
-                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Zgloszenias", new {PageNumber = Model.MMView.PageNumber + 1})">Następna</a></li>
+                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Zgloszenia", new {PageNumber = Model.MMView.PageNumber + 1})">Następna</a></li>
                         }
                     }
                 </ul>
