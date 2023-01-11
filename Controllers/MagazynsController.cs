@@ -53,9 +53,6 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
 
             mMViewModel.MMView.MMCount = SelectedTexts.Count();
 
-        //    mMViewModel.MMView.MMCount = _context.Magazyns
-        //     .Where(t => t.Active == true)
-        //    .Count();
             mMViewModel.MMView.PageNumber = PageNumber;
 
             mMViewModel.MMView.NazwaMagazynu = NazwaMagazynu;
@@ -67,21 +64,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 .Take(mMViewModel.MMView.PageSize)
                     .ToListAsync();
 
-            //    mMViewModel.Magazyns = (IEnumerable<Magazyn>?)await _context.Magazyns
-            //       .Include(t => t.Zgloszenias)
-            //     .Include(t => t.User)
-            //     .Where(t => t.Active == true)
-            //     .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
-            //      .Take(mMViewModel.MMView.PageSize)
-            //      .ToListAsync();
-
-
-            //     ViewData["NazwaMagazynu"] = new SelectList(_context.Magazyns
-            //      .Include(u => u.MagazynName)
-            //      .Select(u => u.MagazynName)
-            //         .Distinct(),
-            //        "MagazynId", "MagazynName", NazwaMagazynu);
-
+            
 
 
 
@@ -151,9 +134,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                     }
                 }
 
-                
-                //    if (!MagazynNameExists(magazyn.MagazynName))
-                //    {
+               
 
                        
 
@@ -161,16 +142,6 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                         await _context.SaveChangesAsync();
                         return RedirectToAction(nameof(List));
 
-              //      }
-
-               //     else
-              //      {
-                  //      ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje!";
-                 //       return View("Create");
-               //     }
-
-
-                
 
             }
             ViewData["MagazynId"] = new SelectList(_context.Magazyns, "MagazynId", "MagazynName",magazyn.MagazynId);
@@ -205,7 +176,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
 
            
 
-            //    ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", magazyn.Id);
+           
             
         }
 

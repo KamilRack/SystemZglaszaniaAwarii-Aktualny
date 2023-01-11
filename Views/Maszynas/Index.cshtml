@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <!-- Lista tekstów -->
+       
 <div class="col-xl-9">
             @if (Model.MMView.MMCount > 0)
             {
@@ -51,7 +51,7 @@
                             <div class="col-md-8">
                                 <div class="card-body">
                                     <p class="card-text fst-italic">@item.MaszynaOpis</p>
-                                    <div class="position-relative">
+                                    <div class="position-static">
                                         <a href="@Url.Action("Details","Maszynas", new {id = item.MaszynaId})" class="btn btn-outline-primary position-absolute bottom-0 end-0">Sprawdź szczegóły</a>
                                     </div>
                                 </div>

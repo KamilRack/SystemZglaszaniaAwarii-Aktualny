@@ -38,10 +38,6 @@ namespace SystemZglaszaniaAwariiGlowny.Data
            .WithMany(c => c.Zgloszenias);
 
 
-         //   modelbuilder.Entity<AppUser>()
-        //    .HasMany(u => u.Zgloszenias)
-        //    .WithOne(t => t.User);
-
             modelbuilder.Entity<Zgloszenia>()
             .HasOne(u => u.User)
             .WithMany(u => u.Zgloszenias);

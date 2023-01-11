@@ -25,7 +25,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                 }
            
             }
-        //zakładanie nowych ról
+       
         private static void SeedRoles(ApplicationDbContext dbContext)
         {
             var roleStore = new RoleStore<IdentityRole>(dbContext);

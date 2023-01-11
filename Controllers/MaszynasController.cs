@@ -49,9 +49,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             mMViewModel.MMView = new MMView();
 
             mMViewModel.MMView.MMCount = SelectedTexts.Count();
-         //   mMViewModel.MMView.MMCount = _context.Maszynas
-        //    .Where(t => t.Active == true)
-        //    .Count();
+        
             mMViewModel.MMView.PageNumber = PageNumber ;
 
             mMViewModel.MMView.NazwaMaszyny = NazwaMaszyny;
@@ -61,21 +59,11 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
             .Take(mMViewModel.MMView.PageSize)
                 .ToListAsync();
-       //     mMViewModel.Maszynas = (IEnumerable<Maszyna>?)await _context.Maszynas
-          //          .Include(t => t.Zgloszenias)
-         //           .Include(t => t.User)
-            //        .Where(t => t.Active == true)
-           //         .Skip((PageNumber - 1) * mMViewModel.MMView.PageSize)
-            //        .Take(mMViewModel.MMView.PageSize)
-            //        .ToListAsync();
+      
 
 
             return View(mMViewModel);
-            // var applicationDbContext = _context.Maszynas
-            //       .Include(m => m.Zgloszenias)
-            //       .Include(m => m.User)
-            //      .Where(m => m.Active == true);
-            //    return View(await applicationDbContext.ToListAsync());
+            
         }
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> List()
@@ -139,8 +127,6 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 }
 
 
-                //    if (!MagazynNameExists(magazyn.MagazynName))
-                //    {
 
 
 
@@ -148,13 +134,7 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(List));
 
-                //      }
-
-                //     else
-                //      {
-                //      ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje!";
-                //       return View("Create");
-                //     }
+               
 
 
 
