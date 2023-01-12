@@ -8,12 +8,18 @@
 
 
 
-
     <!-- Lista tekstów -->
     <div class="col-xl-12">
+        <ul class="list-group col-12">
+            <li class="list-group-item" id="counter"><strong>Liczba aktywnych zgłoszeń w systemie: @ViewBag.Liczba</strong></li>
+            <li class="list-group-item" id="counter1"><strong>Liczba zgłoszeń bez przypisanej osoby realizującej: @ViewBag.Nieprzypisane</strong></li>
+            <li class="list-group-item" id="counter2"><strong>Liczba zrealizowanych zgłoszeń: @ViewBag.Zrealizowane</strong></li>
+            
+            </ul>
+      
         @foreach (var item in Model.Zgloszenias)
         {
-
+            
 
             <div class="card mt-2">
                 <div class="card-header">
@@ -73,3 +79,5 @@
         </div>
     </div>
 </div>
+
+                  

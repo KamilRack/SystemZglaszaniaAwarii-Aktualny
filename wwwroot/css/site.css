@@ -15,6 +15,33 @@ html {
     
 }
 
+#counter
+{
+    text-align: center;
+    font-display:auto;
+    color: green;
+    box-shadow: inherit;
+    text-shadow: revert;
+}
+
+#counter1 {
+    text-align: center;
+    font-display: auto;
+    color: indianred;
+    box-shadow: inherit;
+    text-shadow: revert;
+}
+
+#counter2 {
+    text-align: center;
+    font-display: auto;
+    color: dimgrey;
+    box-shadow: inherit;
+    text-shadow: revert;
+}
+
+
+
 #pierwszy {
     margin: 20px auto;
 }
@@ -34,7 +61,6 @@ html {
 .table th, .table td {
     text-align: center;
 }
-
 
 #zglcreate1, #zglcreate {
     align-content: center;

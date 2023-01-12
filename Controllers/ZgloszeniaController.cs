@@ -25,6 +25,8 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         // GET: Zgloszenia
         public async Task<IActionResult> Index(int PageNumber = 1)
         {
+
+          
             ZgloszeniaViewModel zgloszeniaViewModel = new();
             zgloszeniaViewModel.MMView = new MMView();
 
@@ -45,6 +47,11 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
             .Take(zgloszeniaViewModel.MMView.PageSize)
             .ToListAsync();
 
+          
+            var zgloszenia = _context.Zgloszenias.Include(z => z.Magazyn).Include(z => z.Maszyna).Include(z => z.Mechanik).Include(z => z.User);
+            ViewBag.Liczba = zgloszenia.Where(x => x.Active).Count();
+            ViewBag.Nieprzypisane = zgloszenia.Where(x => x.MechanikId == 1).Count();
+            ViewBag.Zrealizowane = zgloszenia.Where(x => x.Active == false).Count();
 
             return View(zgloszeniaViewModel);
         }
@@ -52,8 +59,10 @@ namespace SystemZglaszaniaAwariiGlowny.Controllers
         public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Zgloszenias.Include(z => z.Magazyn).Include(z => z.Maszyna).Include(z => z.Mechanik).Include(z => z.User);
+            
             return View(await applicationDbContext.ToListAsync());
         }
+
 
         // GET: Zgloszenia/Details/5
         [Authorize(Roles = "admin, mechanik")]

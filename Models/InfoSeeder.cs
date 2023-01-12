@@ -865,7 +865,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                         {
 
                             AwariaOpis = "Brak drutu spawalniczego w celi nr3",
-                            Active = true,
+                            Active = false,
                             AddedDate = DateTime.Now,
                             MagazynId = 4,
                             MaszynaId = 4,
@@ -911,7 +911,7 @@ namespace SystemZglaszaniaAwariiGlowny.Models
                         {
 
                             AwariaOpis = "Zepsuła się rączka betoniarki",
-                            Active = true,
+                            Active = false,
                             AddedDate = DateTime.Now,
                             MagazynId = 2,
                             MaszynaId = 3,
